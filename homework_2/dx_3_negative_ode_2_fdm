@@ -1,0 +1,7 @@
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{$x$}&\textbf{$u(x)$}&\textbf{$\bar{u}(x)$}&\textbf{$\epsilon_{rel}$}\\\hline
+0.00e+00&0.00e+00&0.00e+00&NaN\\\hline
+5.00e-01&4.90e-01&5.00e-01&1.95e+00\\\hline
+1.00e+00&0.00e+00&0.00e+00&NaN\\\hline
+\end{tabular}

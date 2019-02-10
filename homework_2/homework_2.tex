@@ -1,0 +1,1315 @@
+\documentclass[10pt, reqno]{article}		% sets document class
+\usepackage[usenames,dvipsnames]{pstricks}
+\usepackage{epsfig}
+\usepackage{pst-grad} 				% enables gradients
+\usepackage{pst-plot} 				% enables axes
+\usepackage[space]{grffile} 		% enables spaces in paths
+\usepackage{etoolbox} 				% enables spaces in paths
+\makeatletter 						% enables spaces in paths
+\patchcmd\Gread@eps{\@inputcheck#1 }{\@inputcheck"#1"\relax}{}{}
+\makeatother
+\usepackage[margin=1.0in]{geometry}	% sets paper size
+\usepackage{amssymb}				% enables formulas
+\usepackage{amsmath}				% enables formulas
+\usepackage[utf8]{inputenc}			% enables diacritical input
+\usepackage{graphicx}				% enables graphics
+\graphicspath{ {images/} }			% sets graphics path
+\usepackage{chngcntr}				% enables counter
+\counterwithin{table}{subsection}	% enables table pre-labels
+\counterwithin{figure}{subsection}	% enables figure pre-labels
+\usepackage[labelsep=endash, labelfont=bf, font=bf]{caption}	% sets figure and caption separator
+%\usepackage{indentfirst}			% enables indent on first paragraphs
+\linespread{1.1}					% sets spacing to 1.5
+\setlength{\parskip}{0.5em}			% sets paragraph spacing to 1m
+%\usepackage{times}					% sets font to times new roman
+\usepackage{wrapfig}				% enables text wrapping around figures
+\usepackage{gensymb}				% enables symbols
+\usepackage{endnotes}				% enables endnotes
+\usepackage{afterpage}				% enables afterpage capability
+\setcounter{secnumdepth}{3}			% sets counter recognitions to sssection for label capability
+\numberwithin{equation}{section}
+\makeatletter						% set figure labels to center
+\g@addto@macro\@floatboxreset\centering
+\makeatother
+\usepackage{setspace}				% enables environments for spacing
+\usepackage{graphicx}				% allows table usage
+\usepackage{hyperref}				% enables hyperlinks
+\hypersetup{colorlinks=false, linkcolor=cyan, urlcolor=cyan, linktoc=page} % sets hyperlink colors
+\usepackage{accents}				% enables accents
+\usepackage{textcomp} 				% enables copyright
+\usepackage{tabto}					% enables tabbing
+\setlength\parindent{0pt}			% sets no indents
+\usepackage[framed]{mcode} 			% enables code boxes
+\usepackage{titlesec}				% enables title formatting
+\titleformat{\part}{\filcenter\huge\bfseries}{}{}{}
+\usepackage{float}
+
+\begin{document}
+
+\newcommand{\stoptocwriting}{%
+	\addtocontents{toc}{\protect\setcounter{tocdepth}{-5}}}
+\newcommand{\resumetocwriting}{%
+	\addtocontents{toc}{\protect\setcounter{tocdepth}{\arabic{tocdepth}}}}
+
+\stoptocwriting
+\part*{\underline{AERO 430 -- Numerical Simulation} \\ \Large Second-Order Linear Ordinary Differential Equation Boundary-Value Problem \\ \large Ross B. Alexander}
+\resumetocwriting
+
+\vfill
+
+\begin{figure}[h]
+	\begin{center}
+	\includegraphics[width = 0.98\linewidth]{title_image}
+	\end{center}
+\end{figure}
+
+\vspace{80pt}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Model Problem}
+
+The model second-order linear ordinary differential equation boundary-value problem consists of:
+\begin{itemize}
+	\item the second-order linear ordinary differential equation:
+	\begin{equation}
+	\pm u''(x)+k^2u(x)=k^2x \qquad x \in (0, 1)
+	\end{equation}
+	\item the boundary conditions:
+	\begin{equation}
+	u(0) = 0 \quad \textnormal{and} \quad u(1) = 0 
+	\end{equation}
+\end{itemize}
+The model second-order linear ordinary differential equation is given with a plus-or-minus sign, as the results of the solution of each second-order linear ordinary differential equation are similar. The physical model of the positive case is that of the amplitude of standing waves for uniaxial forced vibration of a bar. The physical model for the negative case is that of (1) the temperature of a bar for uniaxial heat conduction, and (2) the deflection of a beam for uniaxial deformation with distributed elastic restraint.
+
+\newpage
+
+\section{Analytical Solution}
+
+\subsection{Positive ODE}
+
+The following equation is the positive second-order linear ordinary differential equation (ODE).
+\begin{equation}
+u''(x)+k^2u(x)=k^2x
+\end{equation}
+
+\subsubsection{Homogeneous Solution}
+
+Let the homogeneous solution to the positive ODE be defined as $u_h(x)$. Then, $u_h(x)$ must satisfy the following homogeneous ODE.
+\begin{equation}
+u''_h(x) + k^2u_h(x) = 0
+\end{equation}
+The solution of the homogeneous ODE is assumed to be of the form: 
+\begin{equation}
+u_h(x) = e^{\lambda x}
+\end{equation}
+Taking the second-derivative of $u_h(x)$, substituting the second-derivative into the homogeneous ODE, and reducing the equation yields the \textbf{characteristic equation}.
+\begin{equation}
+u''_h(x) = \lambda^2 e^{\lambda x}
+\end{equation}
+\begin{equation}
+\lambda^2 e^{\lambda x} + k^2e^{\lambda x} = 0
+\end{equation}
+\begin{equation}
+\mathbf{\lambda^2 + k^2 = 0}
+\end{equation}
+Solving for $\lambda$ yields:
+\begin{equation}
+\lambda = \pm ik
+\end{equation}
+The homogenous solution $u_h(x)$ is then:
+\begin{equation}
+u_h(x) = \alpha e^{ikx} + \beta e^{-ikx}
+\end{equation}
+Making a transformation with the following relations, a more sophistocated solution can be developed:
+\begin{equation}
+\gamma = \frac{\alpha+\beta}{2} \quad \textnormal{and} \quad \delta = i\frac{\alpha-\beta}{2}
+\end{equation}
+\begin{equation}
+u_h(x) = \gamma \frac{e^{ikx}+e^{-ikx}}{2} + \delta \frac{e^{ikx}-e^{-ikx}}{2i}
+\end{equation}
+\begin{equation}
+\mathbf{u_h(x) = \gamma cos(kx) + \delta sin(kx)}
+\end{equation}
+
+\subsubsection{Particular Solution}
+
+Let the particular solution to the positive ODE be defined as $u_p(x)$. Then, $u_p(x)$ must satisfy the ODE:
+\begin{equation}
+u''_p(x) + k^2u_p(x) = k^2x
+\end{equation}
+The second-derivative of $u_p(x)$, $u''_p(x)$, is assumed to be zero, and thus yields the particular solution $u_p(x)$:
+\begin{equation}
+k^2u_p(x) = k^2x
+\end{equation}
+\begin{equation}
+\mathbf{u_p(x) = x}
+\end{equation}
+
+\subsubsection{Boundary Conditions}
+
+Given that $u_h(x)$ is a solution to the homogeneous ODE and $u_p(x)$ is a solution to the ODE, then the combination of $u_h(x)$ and $u_p(x)$ is also a solution to the ODE.
+\begin{equation}
+u(x) = u_h(x) + u_p(x)
+\end{equation}
+\begin{equation}
+u(x) = \gamma cos(kx) + \delta sin(kx) + x
+\end{equation}
+The boundary conditions for the model problem are:
+\begin{equation}
+u(0) = 0 \quad \textnormal{and} \quad u(1) = 0 
+\end{equation}
+Applying the first boundary condition, $u(0) = 0$, we get that $\gamma = 0$:
+\begin{equation}
+u(0) = 0 = \gamma cos(0) + \delta sin(0) + 0
+\end{equation}
+\begin{equation}
+\gamma = 0
+\end{equation}
+Applying the second boundary condition, $u(1) = 0$, we get that $\delta = \frac{-1}{sin(k)}$:
+\begin{equation}
+u(1) = 0 = \delta sin(k) + 1
+\end{equation}
+\begin{equation}
+\delta = \frac{-1}{sin(k)}
+\end{equation}
+
+\subsubsection{Analytical Solution}
+
+Thus, it is shown that for the positive second-order linear ordinary differential equation with specified boundary conditions (reproduced below) that $u(x)$ is a solution to the differential equation on $x \in (0, 1)$.
+\begin{equation}
+u''(x)+k^2u(x)=k^2x \qquad x \in (0, 1)
+\end{equation}
+\begin{equation}
+u(0) = 0 \quad \textnormal{and} \quad u(1) = 0 
+\end{equation}
+\begin{equation}
+\mathbf{u(x) = x - \frac{sin(kx)}{sin(k)}}
+\end{equation}
+
+\subsection{Negative ODE}
+
+The following equation is the negative second-order linear ordinary differential equation (ODE).
+\begin{equation}
+-u''(x)+k^2u(x)=k^2x
+\end{equation}
+
+\subsubsection{Homogeneous Solution}
+
+Let the homogeneous solution to the negative ODE be defined as $u_h(x)$. Then, $u_h(x)$ must satisfy the following homogeneous ODE.
+\begin{equation}
+-u''_h(x) + k^2u_h(x) = 0
+\end{equation}
+The solution of the homogeneous ODE is assumed to be of the form: 
+\begin{equation}
+u_h(x) = e^{\lambda x}
+\end{equation}
+Taking the second-derivative of $u_h(x)$, substituting the second-derivative into the homogeneous ODE, and reducing the equation yields the \textbf{characteristic equation}.
+\begin{equation}
+u''_h = \lambda^2 e^{\lambda x}
+\end{equation}
+\begin{equation}
+-\lambda^2 e^{\lambda x} + k^2e^{\lambda x} = 0
+\end{equation}
+\begin{equation}
+\mathbf{-\lambda^2 + k^2 = 0}
+\end{equation}
+Solving for $\lambda$ yields:
+\begin{equation}
+\lambda = \pm k
+\end{equation}
+The homogenous solution $u_h(x)$ is then:
+\begin{equation}
+u_h(x) = \alpha e^{kx} + \beta e^{-kx}
+\end{equation}
+By making a transformation with the following relations, a more sophistocated solution can be developed:
+\begin{equation}
+\gamma = \frac{\alpha+\beta}{2} \quad \textnormal{and} \quad \delta = \frac{\alpha-\beta}{2}
+\end{equation}
+\begin{equation}
+u_h(x) = \gamma \frac{e^{kx}+e^{-kx}}{2} + \delta \frac{e^{kx}-e^{-kx}}{2}
+\end{equation}
+\begin{equation}
+\mathbf{u_h(x) = \gamma cosh(kx) + \delta sinh(kx)}
+\end{equation}
+
+\subsubsection{Particular Solution}
+
+Let the particular solution to the negative ODE be defined as $u_p(x)$. Then, $u_p(x)$ must satisfy the ODE:
+\begin{equation}
+-u''_p(x) + k^2u_p(x) = k^2x
+\end{equation}
+The second-derivative of $u_p(x)$, $u''_p(x)$, is assumed to be zero, and thus yields the particular solution $u_p(x)$:
+\begin{equation}
+k^2u_p(x) = k^2x
+\end{equation}
+\begin{equation}
+\mathbf{u_p(x) = x}
+\end{equation}
+
+\subsubsection{Boundary Conditions}
+
+Given that $u_h(x)$ is a solution to the homogeneous ODE and $u_p(x)$ is a solution to the ODE, then the combination of $u_h(x)$ and $u_p(x)$ is also a solution to the ODE.
+\begin{equation}
+u(x) = u_h(x) + u_p(x)
+\end{equation}
+\begin{equation}
+u(x) = \gamma cosh(kx) + \delta sinh(kx) + x
+\end{equation}
+The boundary conditions for the model problem are:
+\begin{equation}
+u(0) = 0 \quad \textnormal{and} \quad u(1) = 0 
+\end{equation}
+Applying the first boundary condition, $u(0) = 0$, we get that $\gamma = 0$:
+\begin{equation}
+u(0) = 0 = \gamma cosh(0) + \delta sinh(0) + 0
+\end{equation}
+\begin{equation}
+\gamma = 0
+\end{equation}
+Applying the second boundary condition, $u(1) = 0$, we get that $\delta = \frac{-1}{sinh(k)}$:
+\begin{equation}
+u(1) = 0 = \delta sinh(k) + 1
+\end{equation}
+\begin{equation}
+\delta = \frac{-1}{sinh(k)}
+\end{equation}
+
+\subsubsection{Analytical Solution}
+
+Thus, it is shown that for the negative second-order linear ordinary differential equation with specified boundary conditions (reproduced below) that $u(x)$ is a solution to the differential equation on $x \in (0, 1)$.
+\begin{equation}
+-u''(x)+k^2u(x)=k^2x \qquad x \in (0, 1)
+\end{equation}
+\begin{equation}
+u(0) = 0 \quad \textnormal{and} \quad u(1) = 0 
+\end{equation}
+\begin{equation}
+\mathbf{u(x) = x - \frac{sinh(kx)}{sinh(k)}}
+\end{equation}
+
+\newpage
+
+\section{Numerical Methods}
+
+\subsection{Derivations}
+
+\subsubsection{Second-Order Second-Derivative Finite Difference Method}
+
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Adding the Taylor series for $u_{i-1}$ and $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Rearranging terms to solve for $u''_i$:
+\begin{equation}
+u''_i = \frac{u_{i+1} - 2u_i + u_{i-1}}{\Delta x^2} + \mathcal{O}(\Delta x^2) 
+\end{equation}
+
+From this specific second-derivative formulation using the finite difference method, the approximation can be observed to be second-order ($\mathcal{O}(\Delta x^2)$).
+
+\subsubsection{Fourth-Order Second-Derivative Finite Difference Method}
+
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Adding the Taylor series for $u_{i-1}$ and $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \frac{\Delta x^4}{12} u^{(4)}_i + \mathcal{O}(\Delta x^6)
+\end{equation}
+Rearranging for $u''_i$, we get:
+\begin{equation}
+u''_i = \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} - \frac{\Delta x^2}{12} u^{(4)}_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Returning to the differential equation and then taking two additional derivatives, we can arrive at an expression for $u^{(4)}_i$, with the sign given with opposite correspondence to the sign of the differential equation:
+\begin{equation}
+\pm u''(x)+k^2u(x)=k^2x \qquad x \in (0, 1)
+\end{equation}
+\begin{equation}
+\pm u^{(4)}(x)+k^2u''(x)=0
+\end{equation}
+\begin{equation}
+u^{(4)}(x) = \mp k^2u''(x)
+\end{equation}
+Substituting in the fourth-derivative expression:
+\begin{equation}
+u''_i = \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} \pm \frac{\Delta x^2}{12} k^2u''_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Now, exchanging the $u''_i$ term with the earlier derivation and simplifying:
+\begin{equation}
+u''_i = \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} \pm \frac{\Delta x^2}{12} k^2 \left[\frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} + \mathcal{O}(\Delta x^2) \right] + \mathcal{O}(\Delta x^4)
+\end{equation}
+\begin{equation}
+u''_i = \frac{1}{\Delta x^2} (u_{i+1} -2u_i + u_{i-1}) \pm \frac{k^2}{12} (u_{i+1} -2u_i + u_{i-1}) + \mathcal{O}(\Delta x^4)
+\end{equation}
+\begin{equation}
+u''_i = \left(\frac{1}{\Delta x^2} \pm \frac{k^2}{12}\right) (u_{i+1} -2u_i + u_{i-1}) + \mathcal{O}(\Delta x^4)
+\end{equation}
+From this specific second-derivative formulation using the finite difference method, the approximation can be observed to be fourth-order ($\mathcal{O}(\Delta x^4)$).
+
+\newpage
+
+\subsection{Results}
+
+\subsubsection{Positive ODE}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{positive_ode_order_2_k_1}
+		\includegraphics[width = 0.49\linewidth]{positive_ode_order_4_k_1}
+		\caption{Positive ODE -- 2nd-Order and 4th-Order FDM for $k = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{error_positive_ode_order_2_k_1}
+		\includegraphics[width = 0.49\linewidth]{error_positive_ode_order_4_k_1}
+		\caption{Pointwise Error -- Positive ODE -- 2nd-Order and 4th-Order FDM for $k = 1$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+\includegraphics[height = 0.13\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{positive_ode_order_2_k_2}
+		\includegraphics[width = 0.49\linewidth]{positive_ode_order_4_k_2}
+		\caption{Positive ODE -- 2nd-Order and 4th-Order FDM for $k = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{error_positive_ode_order_2_k_2}
+		\includegraphics[width = 0.49\linewidth]{error_positive_ode_order_2_k_2}
+		\caption{Pointwise Error -- Positive ODE -- 2nd-Order and 4th-Order FDM for $k = 2$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{positive_ode_order_2_k_5}
+		\includegraphics[width = 0.49\linewidth]{positive_ode_order_4_k_5}
+		\caption{Positive ODE -- 2nd-Order and 4th-Order FDM for $k = 5$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{error_positive_ode_order_2_k_5}
+		\includegraphics[width = 0.49\linewidth]{error_positive_ode_order_4_k_5}
+		\caption{Pointwise Error -- Positive ODE -- 2nd-Order and 4th-Order FDM for $k = 5$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+\begin{center}
+	\includegraphics[width = 0.49\linewidth]{positive_ode_order_2_k_10}
+	\includegraphics[width = 0.49\linewidth]{positive_ode_order_4_k_10}
+	\caption{Positive ODE -- 2nd-Order and 4th-Order FDM for $k = 10$}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+	\includegraphics[width = 0.49\linewidth]{error_positive_ode_order_2_k_10}
+	\includegraphics[width = 0.49\linewidth]{error_positive_ode_order_4_k_10}
+	\caption{Pointwise Error -- Positive ODE -- 2nd-Order and 4th-Order FDM for $k = 10$}
+\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+\begin{center}
+	\includegraphics[width = 0.49\linewidth]{positive_ode_order_2_k_20}
+	\includegraphics[width = 0.49\linewidth]{positive_ode_order_4_k_20}
+	\caption{Positive ODE -- 2nd-Order and 4th-Order FDM for $k = 20$}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+	\includegraphics[width = 0.49\linewidth]{error_positive_ode_order_2_k_20}
+	\includegraphics[width = 0.49\linewidth]{error_positive_ode_order_4_k_20}
+	\caption{Pointwise Error -- Positive ODE -- 2nd-Order and 4th-Order FDM for $k = 20$}
+\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsubsection{Negative ODE}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{negative_ode_order_2_k_1}
+		\includegraphics[width = 0.49\linewidth]{negative_ode_order_4_k_1}
+		\caption{Negative ODE -- 2nd-Order and 4th-Order FDM for $k = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{error_negative_ode_order_2_k_1}
+		\includegraphics[width = 0.49\linewidth]{error_negative_ode_order_4_k_1}
+		\caption{Pointwise Error -- Negative ODE -- 2nd-Order and 4th-Order FDM for $k = 1$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.13\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{negative_ode_order_2_k_2}
+		\includegraphics[width = 0.49\linewidth]{negative_ode_order_4_k_2}
+		\caption{Negative ODE -- 2nd-Order and 4th-Order FDM for $k = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{error_negative_ode_order_2_k_2}
+		\includegraphics[width = 0.49\linewidth]{error_negative_ode_order_4_k_2}
+		\caption{Pointwise Error -- Negative ODE -- 2nd-Order and 4th-Order FDM for $k = 2$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{negative_ode_order_2_k_5}
+		\includegraphics[width = 0.49\linewidth]{negative_ode_order_4_k_5}
+		\caption{Negative ODE -- 2nd-Order and 4th-Order FDM for $k = 5$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{error_negative_ode_order_2_k_5}
+		\includegraphics[width = 0.49\linewidth]{error_negative_ode_order_4_k_5}
+		\caption{Pointwise Error -- Negative ODE -- 2nd-Order and 4th-Order FDM for $k = 5$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{negative_ode_order_2_k_10}
+		\includegraphics[width = 0.49\linewidth]{negative_ode_order_4_k_10}
+		\caption{Negative ODE -- 2nd-Order and 4th-Order FDM for $k = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{error_negative_ode_order_2_k_10}
+		\includegraphics[width = 0.49\linewidth]{error_negative_ode_order_4_k_10}
+		\caption{Pointwise Error -- Negative ODE -- 2nd-Order and 4th-Order FDM for $k = 10$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{negative_ode_order_2_k_20}
+		\includegraphics[width = 0.49\linewidth]{negative_ode_order_4_k_20}
+		\caption{Negative ODE -- 2nd-Order and 4th-Order FDM for $k = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{error_negative_ode_order_2_k_20}
+		\includegraphics[width = 0.49\linewidth]{error_negative_ode_order_4_k_20}
+		\caption{Pointwise Error -- Negative ODE -- 2nd-Order and 4th-Order FDM for $k = 20$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsection{Discussion}
+
+Meshes were calculated for $\Delta x = 0.5^{18}$, but only meshes up to $\Delta x = 0.5^8$ are shown in the tables and figures due to sheer size and readability.
+
+For the positive ODE, the analytical solution oscillates and generally increases in the amplitude of the oscillations as $k$ increases. Like expected, as mesh size is decreased, the approximation of the solution to the model problem approaches the analytical solution. The fourth-order methods demonstrate quicker error reduction than second-order methods.
+
+For the negative ODE, the analytical solution asymptotically approaches the line $y = x$ as $k$ increases. Like expected, as mesh size is decreased, the approximation of the solution to the model problem approaches the analytical solution. Unlike the positive ODE, at high values of $k$ ($k \ge 20$), the mesh size $\Delta x = (1/2)^6$ is sufficient to resolve the solution as difference between different values of $k$ is increasingly negligible. The fourth-order methods demonstrate quicker error reduction than second-order methods.
+
+\newpage
+
+\section{Convergence Analysis}
+
+\subsection{Rate of Convergence Derivation}
+
+Let the error for a particular mesh size $\Delta x$ be $E\left(\Delta x\right)$:
+\begin{equation}
+E\left(\Delta x\right) = C\left(\Delta x\right)^\beta
+\end{equation}
+Then for a smaller mesh size $\frac{\Delta x}{2}$ we have:
+\begin{equation}
+E\left(\frac{\Delta x}{2}\right) = C\left(\frac{\Delta x}{2}\right)^\beta
+\end{equation}
+Dividing the error at each mesh size and taking the logarithm:
+\begin{equation}
+\frac{E\left(\Delta x\right)}{E\left(\frac{\Delta x}{2}\right)} = \frac{C\left(\Delta x\right)^\beta}{C\left(\frac{\Delta x}{2}\right)^\beta} = 2^\beta
+\end{equation}
+\begin{equation}
+\log\left[\frac{E\left(\Delta x\right)}{E\left(\frac{\Delta x}{2}\right)}\right] = \log(2^\beta)
+\end{equation}
+\begin{equation}
+\log\left[\frac{E\left(\Delta x\right)}{E\left(\frac{\Delta x}{2}\right)}\right] = \beta \log(2)
+\end{equation}
+Rearranging for $\beta$ and simplifying:
+\begin{equation}
+\beta = \frac{1}{\log(2)} \left[\log\left(E\left(\Delta x\right)\right) - \log\left(E\left(\frac{\Delta x}{2}\right)\right)\right] 
+\end{equation}
+Denoting $E^*_{\Delta x} = \log\left(E\left(\Delta x\right)\right)$:
+\begin{equation}
+\mathbf{\beta = \frac{E^*_{\Delta x} - E^*_{\frac{\Delta x}{2}}}{\log (2)}}
+\end{equation}
+
+\subsection{First-Order First-Derivative Finite Difference Method}
+
+\subsubsection{Derivation}
+
+Developing the Taylor series for $u(x)$ in the vicinity of $x = 1$:
+\begin{equation}
+u_{N-1} = u_N - \Delta x u'_N + \frac{\Delta x^2}{2} u''_N + \mathcal{O}(\Delta x^3)
+\end{equation}
+Rearranging terms to solve for $u'_N$:
+\begin{equation}
+u'_N = \frac{u_N - u_{N-1}}{\Delta x} + \mathcal{O}(\Delta x)
+\end{equation}
+Switching to a compact notation where $u_N = u_N$, $u_{N-1} = u_{N-1}$, etc.:
+\begin{equation}
+u'_N = \frac{u_N - u_{N-1}}{\Delta x} + \mathcal{O}(\Delta x)
+\end{equation}
+Applying the boundary condition $u(1) = u_N = 0$:
+\begin{equation}
+u'_N = \frac{- u_{N-1}}{\Delta x} + \mathcal{O}(\Delta x)
+\end{equation}
+
+From this specific first-derivative formulation at the boundary $x = 1$ using the finite difference method, the approximation can be observed to be first-order ($\mathcal{O}(\Delta x)$).
+
+\newpage
+
+\subsubsection{Results}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.76\linewidth]{positive_ode_order_2_fd_order_1}
+		\caption{Positive ODE -- 2nd-Order FDM with 1st-Order First-Derivative Approximation}	
+	\end{center}
+\end{figure}
+
+\vfill
+
+\begin{table}[H]
+	\input{positive_ode_2_fdm_1_dudx.tex}
+	\caption{Positive ODE -- 2nd-Order FDM with 1st-Order First-Derivative Approximation -- Rate of Convergence Values}	
+\end{table}\begin{figure}[H]
+	
+	\begin{center}
+		\includegraphics[width = 0.76\linewidth]{negative_ode_order_2_fd_order_1}
+		\caption{Negative ODE -- 2nd-Order FDM with 1st-Order First-Derivative Approximation}	
+	\end{center}
+\end{figure}
+
+\vfill
+
+\begin{table}[H]
+	\input{negative_ode_2_fdm_1_dudx.tex}
+	\caption{Negative ODE -- 2nd-Order FDM with 1st-Order First-Derivative Approximation -- Rate of Convergence Values}	
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.76\linewidth]{positive_ode_order_4_fd_order_1}
+		\caption{Positive ODE -- 4th-Order FDM with 1st-Order First-Derivative Approximation}	
+	\end{center}
+\end{figure}
+
+\vfill
+
+\begin{table}[H]
+	\input{positive_ode_4_fdm_1_dudx.tex}
+	\caption{Positive ODE -- 4th-Order FDM with 1st-Order First-Derivative Approximation -- Rate of Convergence Values}	
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.76\linewidth]{negative_ode_order_4_fd_order_1}
+		\caption{Negative ODE -- 4th-Order FDM with 1st-Order First-Derivative Approximation}	
+	\end{center}
+\end{figure}
+
+\vfill
+
+\begin{table}[H]
+	\input{negative_ode_4_fdm_1_dudx.tex}
+	\caption{Negative ODE -- 4th-Order FDM with 1st-Order First-Derivative Approximation -- Rate of Convergence Values}	
+\end{table}
+
+\newpage
+
+\subsection{Second-Order First-Derivative Finite Difference Method}
+
+\subsubsection{Derivation}
+
+Developing the Taylor series for $u(x)$ in the vicinity of $x = 1$:
+\begin{equation}
+u_{N-1} = u_N - \Delta x u'_N + \frac{\Delta x^2}{2} u''_N + \mathcal{O}(\Delta x^3)
+\end{equation}
+Rearranging terms to solve for $u'_N$, but leaving the second-derivative term:
+\begin{equation}
+\label{eqn:2o1d}
+u'_N = \frac{u_N - u_{N-1}}{\Delta x} + \frac{\Delta x}{2} u''_N + \mathcal{O}(\Delta x^2)
+\end{equation}
+Returning to the differential equation, rearranging for the second derivative, and evaluating the differential equation at $x = 1$ with corresponding boundary condition $u(1) = u_N = 0$:
+\begin{equation}
+\pm u''(x)+k^2u(x)=k^2x
+\end{equation}
+\begin{equation}
+u''_N = \pm k^2(1-u_N)
+\end{equation}
+\begin{equation}
+\label{eqn:2o2d}
+u''_N = \pm k^2
+\end{equation}
+This equation yields the exact sign correspondence with the sign of the ODE.
+
+Substituting Equation \ref{eqn:2o2d} into Equation \ref{eqn:2o1d}
+\begin{equation}
+u'_N = \frac{u_N - u_{N-1}}{\Delta x} \pm \frac{k^2 \Delta x}{2} + \mathcal{O}(\Delta x^2)
+\end{equation}
+Applying the boundary condition $u(1) = u_N = 0$:
+\begin{equation}
+u'_N = \frac{-u_{N-1}}{\Delta x} \pm \frac{k^2 \Delta x}{2} + \mathcal{O}(\Delta x^2)
+\end{equation}
+
+From this specific first-derivative formulation at the boundary $x = 1$ using the finite difference method, the approximation can be observed to be second-order ($\mathcal{O}(\Delta x^2)$).
+
+\newpage
+
+\subsubsection{Results}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.73\linewidth]{positive_ode_order_2_fd_order_2}
+		\caption{Positive ODE -- 2nd-Order FDM with 2nd-Order First-Derivative Approximation}	
+	\end{center}
+\end{figure}
+
+\vfill
+
+\begin{table}[H]
+	\input{positive_ode_2_fdm_2_dudx.tex}
+	\caption{Positive ODE -- 2nd-Order FDM with 2nd-Order First-Derivative Approximation -- Rate of Convergence Values}	
+\end{table}\begin{figure}[H]
+	
+	\begin{center}
+		\includegraphics[width = 0.76\linewidth]{negative_ode_order_2_fd_order_2}
+		\caption{Negative ODE -- 2nd-Order FDM with 2nd-Order First-Derivative Approximation}	
+	\end{center}
+\end{figure}
+
+\vfill
+
+\begin{table}[H]
+	\input{negative_ode_2_fdm_2_dudx.tex}
+	\caption{Negative ODE -- 2nd-Order FDM with 2nd-Order First-Derivative Approximation -- Rate of Convergence Values}	
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.76\linewidth]{positive_ode_order_4_fd_order_2}
+		\caption{Positive ODE -- 4th-Order FDM with 2nd-Order First-Derivative Approximation}	
+	\end{center}
+\end{figure}
+
+\vfill
+
+\begin{table}[H]
+	\input{positive_ode_4_fdm_2_dudx.tex}
+	\caption{Positive ODE -- 4th-Order FDM with 2nd-Order First-Derivative Approximation -- Rate of Convergence Values}	
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.76\linewidth]{negative_ode_order_4_fd_order_2}
+		\caption{Negative ODE -- 4th-Order FDM with 2nd-Order First-Derivative Approximation}	
+	\end{center}
+\end{figure}
+
+\vfill
+
+\begin{table}[H]
+	\input{negative_ode_4_fdm_2_dudx.tex}
+	\caption{Negative ODE -- 4th-Order FDM with 2nd-Order First-Derivative Approximation -- Rate of Convergence Values}	
+\end{table}
+
+\newpage
+
+\subsection{Fourth-Order First-Derivative Finite Difference Method}
+
+\subsubsection{Derivation}
+
+Developing the Taylor series for $u(x)$ in the vicinity of $x = 1$ and dividing by $\Delta x$:
+\begin{equation}
+u_{N-1} = u_N - \Delta x u'_N + \frac{\Delta x^2}{2} u''_N - \frac{\Delta x^3}{6} u^{(3)}_N + \frac{\Delta x^4}{24} u^{(4)}_N + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+\frac{u_{N-1}}{\Delta x} = \frac{u_N}{\Delta x} - u'_N + \frac{\Delta x}{2} u''_N - \frac{\Delta x^2}{6} u^{(3)}_N + \frac{\Delta x^3}{24} u^{(4)}_N + \mathcal{O}(\Delta x^4)
+\end{equation}
+Returning to the differential equation, rearranging for the second derivative, and evaluating the differential equation at $x = 1$ with corresponding boundary condition $u(1) = u_N = 0$:
+\begin{equation}
+\pm u''(x)+k^2u(x)=k^2x
+\end{equation}
+\begin{equation}
+u''_N = \pm k^2(1-u_N)
+\end{equation}
+\begin{equation}
+u''_N = \pm k^2
+\end{equation}
+Similarly, rearranging for the second derivative and taking one derivative:
+\begin{equation}
+\pm u''(x)+k^2u(x)=k^2x
+\end{equation}
+\begin{equation}
+u''_N = \pm k^2(x-u_N)
+\end{equation}
+\begin{equation}
+u^{(3)}_N = \pm k^2(1-u_N')
+\end{equation}
+Similarly, rearranging for the second derivative and taking two derivatives:
+\begin{equation}
+\pm u''(x)+k^2u(x)=k^2x
+\end{equation}
+\begin{equation}
+u''_N = \pm k^2(x-u_N)
+\end{equation}
+\begin{equation}
+u^{(4)}_N = \mp k^2u_N''
+\end{equation}
+Substituing in the earlier expression for the second derivative:
+\begin{equation}
+u^{(4)}_N = \mp k^2(\pm k^2)
+\end{equation}
+\begin{equation}
+u^{(4)}_N = - k^4
+\end{equation}
+Now, substituting all of the derivatives into the formulation, applying the corresponding boundary condition $u(1) = u_N = 0$, and rearranging for $u'_N$:
+\begin{equation}
+\frac{u_{N-1}}{\Delta x} = \frac{u_N}{\Delta x} -u'_N \pm \frac{\Delta x k^2}{2} \mp \frac{\Delta x^2 k^2}{6} \pm \frac{\Delta x^2 k^2}{6} u_N' - \frac{\Delta x^3 k^4}{24} + \mathcal{O}(\Delta x^4)
+\end{equation}
+\begin{equation}
+\left[1 \mp \frac{\Delta x^2k^2}{6}\right] u'_N = \frac{u_N - u_{N-1}}{\Delta x} \pm \frac{\Delta x k^2}{2} \mp \frac{\Delta x^2 k^2}{6} - \frac{\Delta x^3 k^4}{24} + \mathcal{O}(\Delta x^4)
+\end{equation}
+\begin{equation}
+u'_N = \left(1 \mp \frac{\Delta x^2k^2}{6}\right)^{-1} \left[\frac{- u_{N-1}}{\Delta x} \pm \frac{\Delta x k^2}{2} \mp \frac{\Delta x^2 k^2}{6} - \frac{\Delta x^3 k^4}{24}\right] + \mathcal{O}(\Delta x^4)
+\end{equation}
+
+From this specific first-derivative formulation at the boundary $x = 1$ using the finite difference method, the approximation can be observed to be fourth-order ($\mathcal{O}(\Delta x^4)$).
+
+\newpage
+
+\subsubsection{Results}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.76\linewidth]{positive_ode_order_2_fd_order_4}
+		\caption{Positive ODE -- 2nd-Order FDM with 4th-Order First-Derivative Approximation}	
+	\end{center}
+\end{figure}
+
+\vfill
+
+\begin{table}[H]
+	\input{positive_ode_2_fdm_4_dudx.tex}
+	\caption{Positive ODE -- 2nd-Order FDM with 4th-Order First-Derivative Approximation -- Rate of Convergence Values}	
+\end{table}\begin{figure}[H]
+
+\begin{center}
+	\includegraphics[width = 0.76\linewidth]{negative_ode_order_2_fd_order_4}
+	\caption{Negative ODE -- 2nd-Order FDM with 4th-Order First-Derivative Approximation}	
+\end{center}
+\end{figure}
+
+\vfill
+
+\begin{table}[H]
+	\input{negative_ode_2_fdm_4_dudx.tex}
+	\caption{Negative ODE -- 2nd-Order FDM with 4th-Order First-Derivative Approximation -- Rate of Convergence Values}	
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.76\linewidth]{positive_ode_order_4_fd_order_4}
+		\caption{Positive ODE -- 4th-Order FDM with 4th-Order First-Derivative Approximation}	
+	\end{center}
+\end{figure}
+
+\vfill
+
+\begin{table}[H]
+	\input{positive_ode_4_fdm_4_dudx.tex}
+	\caption{Positive ODE -- 4th-Order FDM with 4th-Order First-Derivative Approximation -- Rate of Convergence Values}	
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.76\linewidth]{negative_ode_order_4_fd_order_4}
+		\caption{Negative ODE -- 4th-Order FDM with 4th-Order First-Derivative Approximation}	
+	\end{center}
+\end{figure}
+
+\vfill
+
+\begin{table}[H]
+		\input{negative_ode_4_fdm_4_dudx.tex}
+		\caption{Negative ODE -- 4th-Order FDM with 4th-Order First-Derivative Approximation -- Rate of Convergence Values}	
+\end{table}
+
+\newpage
+
+\subsection{Discussion}
+
+The positive ODE appears to be less stable than the negative ODE -- a conclusion drawn from the significant deviation from an ideal rate of convergence. This is likely because the solution to the positive ODE can contain numerous oscillations, while the solution to the negative ODE is a single smooth oscillation for every solution. Therefore, the well-behavedness of an ODE solution is a factor in the rate of convergence of a particular finite difference method.
+
+As the above figures indicate, the logarithm of the error decreases roughly at a rate proportional to the negative logarithm of the mesh size. The proportionality constant $\beta$, the rate of convergence, is dependent on the lowest-order method used. Thus, the first-order approximation has a rate of convergence of 1, the second-order approximation has a rate of convergence of 2, and the fourth-order approximation has a rate of convergence of 4.
+
+\newpage
+
+\subsection{$\mathcal{O}(\Delta x^n)$ Comparison of Finite Difference Methods and Extraction Methods}
+
+\subsubsection{Positive ODE}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.46\linewidth]{positive_ode_order_2_fd_order_1}
+		\includegraphics[width=0.46\linewidth]{positive_ode_order_4_fd_order_1}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.46\linewidth]{positive_ode_order_2_fd_order_2}
+		\includegraphics[width=0.46\linewidth]{positive_ode_order_4_fd_order_2}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.46\linewidth]{positive_ode_order_2_fd_order_4}
+		\includegraphics[width=0.46\linewidth]{positive_ode_order_4_fd_order_4}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\subsubsection{Negative ODE}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.46\linewidth]{negative_ode_order_2_fd_order_1}
+		\includegraphics[width=0.46\linewidth]{negative_ode_order_4_fd_order_1}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.46\linewidth]{negative_ode_order_2_fd_order_2}
+		\includegraphics[width=0.46\linewidth]{negative_ode_order_4_fd_order_2}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.46\linewidth]{negative_ode_order_2_fd_order_4}
+		\includegraphics[width=0.46\linewidth]{negative_ode_order_4_fd_order_4}
+	\end{center}
+\end{figure}
+
+\subsubsection{Discussion}
+
+Clearly, the composite order of the solution to the boundary-value problem is dependent on the lowest-order method used across the entire solution -- in this case, the lowest-order method of the finite difference method and the extraction method. For example, if the finite-difference method were third-order and the extraction method was fourth-order, the overall solution would be third-order, with a rate of convergence of 3.
+
+The negative case is inherently more stable than the positive case, likely due to the shape of the solution on the solution domain (one oscillation versus multiple oscillations). Using extraction methods of second-order or higher, we typically see an increase in accuracy as the mesh size increases until approximately 10$^{-3}$. After that, we begin to see a decrease in accuracy as the mesh size decreases beyond approximately 10$^{-4}$. The trend is similar across $k$ values and across the sign of the ODE.
+
+\newpage
+
+\appendix
+
+\section{$u(x)$ v. $u_{exact}(x)$ Tables}
+
+\subsection{Positive ODE with 2nd-Order FDM}
+
+\input{dx_3_positive_ode_2_fdm}
+\input{dx_5_positive_ode_2_fdm}
+\newline
+\input{dx_9_positive_ode_2_fdm}
+\input{dx_17_positive_ode_2_fdm}
+\newline
+\input{dx_33_positive_ode_2_fdm}
+
+\newpage
+
+\subsection{Positive ODE with 4th-Order FDM}
+
+\input{dx_3_positive_ode_4_fdm}
+\input{dx_5_positive_ode_4_fdm}
+\newline
+\input{dx_9_positive_ode_4_fdm}
+\input{dx_17_positive_ode_4_fdm}
+\newline
+\input{dx_33_positive_ode_4_fdm}
+
+\newpage
+
+\subsection{Negative ODE with 2nd-Order FDM}
+
+\input{dx_3_negative_ode_2_fdm}
+\input{dx_5_negative_ode_2_fdm}
+\newline
+\input{dx_9_negative_ode_2_fdm}
+\input{dx_17_negative_ode_2_fdm}
+\newline
+\input{dx_33_negative_ode_2_fdm}
+
+\newpage
+
+\subsection{Negative ODE with 4th-Order FDM}
+\input{dx_3_negative_ode_4_fdm}
+\input{dx_5_negative_ode_4_fdm}
+\newline
+\input{dx_9_negative_ode_4_fdm}
+\input{dx_17_negative_ode_4_fdm}
+\newline
+\input{dx_33_negative_ode_4_fdm}
+
+\newpage
+
+\section{MATLAB Code}
+
+\begin{lstlisting}
+clear all; close all; clc
+
+%% Initial Conditions
+
+plotGen     = false;
+plotSave    = false;
+tableSave   = false;
+tableSave2  = true;
+
+odeType = 'Positive';
+odeOrder = 2;
+
+for dudxOrder = [4]
+
+	mesh.order = 1:18;
+	mesh.dx = 0.5.^mesh.order;
+	
+	rowID = 0;
+	
+	%% Boundary Value Problem Solution
+	
+		for k = [1 2 5 10 20]
+		
+		rowID = rowID + 1;
+		colID = 0;
+		
+		if plotGen
+		
+			fig1 = figure(1);
+			xlabel('x');    ylabel('u(x)');
+			grid on;        grid minor;
+			box on;         hold on;
+			set(gcf, 'Position', [1 1 624 550])
+			
+			if odeOrder == 2
+				titleString = strcat(odeType, ' ODE with 2nd-Order FDM for k=', num2str(k));
+			elseif odeOrder == 4
+				titleString = strcat(odeType, ' ODE with 4th-Order FDM for k=', num2str(k));
+			end
+			
+			title(titleString)
+			
+			fig2 = figure(2);
+			xlabel('x');    ylabel('\epsilon_{rel}');
+			grid on;        grid minor;
+			box on;         hold on;
+			set(gcf, 'Position', [1 1 624 550])
+			
+			title(titleString)
+		
+		end
+		
+		for dx = mesh.dx
+		
+			nx = 1 / dx + 1;
+			x = linspace(0, 1, nx);
+			b = zeros(nx, 1);
+			colID = colID + 1;
+			
+			if strcmpi(odeType, 'positive') && odeOrder == 2
+				alpha = 1 / k^2 / dx^2;
+				beta = -2 / k^2 / dx^2 + 1;
+			elseif strcmpi(odeType, 'positive') && odeOrder == 4
+				alpha = 1 / k^2 / dx^2 + 1/12;
+				beta = -2 / k^2 / dx^2 + 10/12;
+			elseif strcmpi(odeType, 'negative') && odeOrder == 2
+				alpha = -1 / k^2 / dx^2;
+				beta = 2 / k^2 / dx^2 + 1;
+			elseif strcmpi(odeType, 'negative') && odeOrder == 4
+				alpha = -1 / k^2 / dx^2 + 1/12;
+				beta = 2 / k^2 / dx^2 + 10/12;
+			end
+			
+			A = gallery('tridiag', nx, alpha, beta, alpha);
+			
+			A(1, 1) = 1;    A(1, 2) = 0;        b(1) = 0;
+			A(nx, nx) = 1;  A(nx, nx-1) = 0;    b(nx) = 0;
+			b(2:nx-1) = x(2:nx-1);
+			
+			u = A\b;
+			
+			if plotGen && dx >= mesh.dx(8)
+			
+				figure(1)
+				plot(x, u, 'linewidth', 1)
+			
+			end
+			
+			if strcmpi(odeType, 'positive') && dudxOrder == 1
+				dudx.fdm(rowID, colID) = - u(end-1) / dx;
+			elseif strcmpi(odeType, 'positive') && dudxOrder == 2
+				dudx.fdm(rowID, colID) = - u(end-1) / dx + dx * k^2 / 2;
+			elseif strcmpi(odeType, 'positive') && dudxOrder == 4
+				dudx.fdm(rowID, colID) = 1 / (1 - dx^2 * k^2 / 6) * (-u(end-1) / ...
+				dx + dx * k^2 / 2 - dx^2 * k^2 / 6 - dx^3 * k^4 / 24);
+			elseif strcmpi(odeType, 'negative') && dudxOrder == 1
+				dudx.fdm(rowID, colID) = - u(end-1) / dx;
+			elseif strcmpi(odeType, 'negative') && dudxOrder == 2
+				dudx.fdm(rowID, colID) = - u(end-1) / dx - dx * k^2 / 2;
+			elseif strcmpi(odeType, 'negative') && dudxOrder == 4
+				dudx.fdm(rowID, colID) = 1 / (1 + dx^2 * k^2 / 6) * (-u(end-1) / ...
+				dx - dx * k^2 / 2 + dx^2 * k^2 / 6 - dx^3 * k^4 / 24);
+			end
+			
+			if strcmpi(odeType, 'positive')
+				ux.exact = x - sin(k*x) ./ sin(k);
+				dudx.exact(rowID, colID) = 1 - k * cos(k) / sin(k);
+			elseif strcmpi(odeType, 'negative')
+				dudx.exact(rowID, colID) = 1 - k * cosh(k) / sinh(k);
+				ux.exact = x - sinh(k*x) ./ sinh(k);
+			end
+			
+			if plotGen && dx >= mesh.dx(8)
+			
+				figure(2)
+				plot(x(2:end-1), abs(ux.exact(2:end-1)'-u(2:end-1)) ./ ...
+				abs(ux.exact(2:end-1)')*100, 'o-')
+			
+			end
+			
+			if tableSave2 && dx >= mesh.dx(5)
+			
+				colLabels = {'$x$', '$u(x)$', '$\bar{u}(x)$', '$\epsilon_{rel}$'};
+				
+				matrix2latex([x' u ux.exact' (abs(ux.exact'-u)./abs(ux.exact')*100)], ...
+				strcat('dx_', num2str(nx), '_', lower(odeType), '_ode_', ...
+				num2str(odeOrder), '_fdm'), 'columnLabels', colLabels, ...
+				'alignment', 'c', 'format', '%1.2e')
+			
+			end
+		
+		end
+	
+		if plotGen
+		
+			figure(1)
+			
+			if strcmpi(odeType, 'positive')
+				fplot(@(x) x-sin(k*x)/sin(k), [0 1], '-k', 'linewidth', 1.5)
+			elseif strcmpi(odeType, 'negative')
+				fplot(@(x) x-sinh(k*x)/sinh(k), [0 1], '-k', 'linewidth', 1.5)
+			end
+			
+			legend('\Deltax = (1/2)^1', '\Deltax = (1/2)^2', '\Deltax = (1/2)^3', ...
+			'\Deltax = (1/2)^4', '\Deltax = (1/2)^5', '\Deltax = (1/2)^6', ...
+			'\Deltax = (1/2)^7', '\Deltax = (1/2)^8', 'Analytical Solution', ...
+			'location', 'eastoutside')
+			
+			drawnow
+			
+			figure(2)
+			
+			legend('\Deltax = (1/2)^1', '\Deltax = (1/2)^2', '\Deltax = (1/2)^3', ...
+			'\Deltax = (1/2)^4', '\Deltax = (1/2)^5', '\Deltax = (1/2)^6', ...
+			'\Deltax = (1/2)^7', '\Deltax = (1/2)^8', 'location', 'eastoutside')
+			ylim([10^-14 10^4])
+			set(gca, 'YScale', 'log')
+			
+			drawnow
+			
+			if plotSave
+			
+				figure(1)
+				figureString = strcat(lower(odeType), '_ode_order_', ...
+				num2str(odeOrder), '_k_', num2str(k));
+				saveas(gcf, figureString, 'png')
+				figure(2)
+				figureString = strcat('error_', lower(odeType), '_ode_order_', ...
+				num2str(odeOrder), '_k_', num2str(k));
+				saveas(gcf, figureString, 'png')
+			
+			close gcf;  close gcf
+			
+			end
+		
+		end
+	
+	end
+	
+	
+	%% Convergence Analysis
+	
+	relError = abs(dudx.exact-dudx.fdm) ./ abs(dudx.exact) * 100;
+	
+	if plotGen
+	
+		figure
+		xlabel('-log_{10}(\Deltax)');   ylabel('log_{10}(\epsilon_{rel})');
+		grid on;                        grid minor;
+		box on;                         hold on;
+		ylim([10^-12 10^4])
+	
+		for kID = 1:5
+			loglog(-mesh.dx, relError(kID, :), '-o', 'linewidth', 1.25);
+		end
+	
+		if odeOrder == 2 && dudxOrder == 1
+			titleString = strcat(odeType, ' ODE with 2nd-Order FDM - 1st-Order ...
+			First Derivative Approximation');
+		elseif odeOrder == 2 && dudxOrder == 2
+			titleString = strcat(odeType, ' ODE with 2nd-Order FDM - 2nd-Order ...
+			First Derivative Approximation');
+		elseif odeOrder == 2 && dudxOrder == 4
+			titleString = strcat(odeType, ' ODE with 2nd-Order FDM - 4th-Order ...
+			First Derivative Approximation');
+		elseif odeOrder == 4 && dudxOrder == 1
+			titleString = strcat(odeType, ' ODE with 4th-Order FDM - 1st-Order ...
+			First Derivative Approximation');
+		elseif odeOrder == 4 && dudxOrder == 2
+			titleString = strcat(odeType, ' ODE with 4th-Order FDM - 2nd-Order ...
+			First Derivative Approximation');
+		elseif odeOrder == 4 && dudxOrder == 4
+			titleString = strcat(odeType, ' ODE with 4th-Order FDM - 4th-Order ...
+			First Derivative Approximation');
+		end
+	
+		title(titleString)
+		legend('k=1', 'k=2', 'k=5', 'k=10', 'k=20')
+		set(gca, 'XScale', 'log');  set(gca, 'YScale', 'log');
+		drawnow
+	
+		if plotSave
+		
+			figureString = strcat(lower(odeType), '_ode_order_', num2str(odeOrder), ...
+			'_fd_order_', num2str(dudxOrder));
+			saveas(gcf, figureString, 'epsc')
+			close gcf
+		
+		end
+	
+	end
+	
+	%% Rate of Convergence Analysis
+	
+	logRelError = log10(relError);
+	
+	for kID = 1:5
+	
+		for rocID = 1:length(logRelError) - 1
+			roc(kID, rocID) = (logRelError(kID, rocID+1) - logRelError(kID, rocID)) / -log10(2);
+		end
+	
+	end
+	
+	colLabels = {'$\Delta x$', '$\beta(k=1)$', '$\beta(k=2)$', '$\beta(k=5)$', ...
+	'$\beta(k=10)$', '$\beta(k=20)$'};
+	
+	if tableSave
+	
+		matrix2latex([mesh.dx(1:17)' roc'], strcat(lower(odeType), '_ode_', ...
+		num2str(odeOrder), '_fdm_', num2str(dudxOrder), '_dudx.tex'), ...
+		'columnLabels', colLabels, 'alignment', 'c', 'format', '%5.4f')
+	
+	end
+
+end
+\end{lstlisting}
+
+\end{document}

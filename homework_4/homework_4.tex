@@ -1,0 +1,2312 @@
+\documentclass[10pt]{article}		% sets document class
+\usepackage[usenames,dvipsnames]{pstricks}
+\usepackage{epsfig}
+\usepackage{pst-grad} 				% enables gradients
+\usepackage{pst-plot} 				% enables axes
+\usepackage[space]{grffile} 		% enables spaces in paths
+\usepackage{etoolbox} 				% enables spaces in paths
+\makeatletter 						% enables spaces in paths
+\patchcmd\Gread@eps{\@inputcheck#1 }{\@inputcheck"#1"\relax}{}{}
+\makeatother
+\usepackage[margin=1.0in]{geometry}	% sets paper size
+\usepackage{amssymb}				% enables formulas
+\usepackage{amsmath}				% enables formulas
+\usepackage[utf8]{inputenc}			% enables diacritical input
+\usepackage{graphicx}				% enables graphics
+\graphicspath{ {images/} }			% sets graphics path
+\usepackage{chngcntr}				% enables counter
+\counterwithin{table}{subsection}	% enables table pre-labels
+\counterwithin{figure}{subsection}	% enables figure pre-labels
+\usepackage[labelsep=endash, labelfont=bf, font=bf]{caption}	% sets figure and caption separator
+%\usepackage{indentfirst}			% enables indent on first paragraphs
+\linespread{1.1}					% sets spacing to 1.5
+\setlength{\parskip}{0.5em}			% sets paragraph spacing to 1m
+%\usepackage{times}					% sets font to times new roman
+\usepackage{wrapfig}				% enables text wrapping around figures
+\usepackage{gensymb}				% enables symbols
+\usepackage{endnotes}				% enables endnotes
+\usepackage{afterpage}				% enables afterpage capability
+\setcounter{secnumdepth}{3}			% sets counter recognitions to sssection for label capability
+\numberwithin{equation}{section}
+\makeatletter						% set figure labels to center
+\g@addto@macro\@floatboxreset\centering
+\makeatother
+\usepackage{setspace}				% enables environments for spacing
+\usepackage{graphicx}				% allows table usage
+\usepackage{hyperref}				% enables hyperlinks
+\hypersetup{colorlinks=false, linkcolor=cyan, urlcolor=cyan, linktoc=page} % sets hyperlink colors
+\usepackage{accents}				% enables accents
+\usepackage{textcomp} 				% enables copyright
+\usepackage{tabto}					% enables tabbing
+\setlength\parindent{0pt}			% sets no indents
+\usepackage[framed]{mcode} 			% enables code boxes
+\usepackage{titlesec}				% enables title formatting
+\titleformat{\part}{\filcenter\huge\bfseries}{}{}{}
+\usepackage{float}
+
+\begin{document}
+
+\newcommand{\stoptocwriting}{%
+	\addtocontents{toc}{\protect\setcounter{tocdepth}{-5}}}
+\newcommand{\resumetocwriting}{%
+	\addtocontents{toc}{\protect\setcounter{tocdepth}{\arabic{tocdepth}}}}
+
+\stoptocwriting
+\part*{\underline{AERO 430 -- Numerical Simulation} \\ \Large Comparison of Finite Element Methods and Finite Difference Methods for Second-Order Linear Ordinary Differential Equation Boundary-Value Problems \\ \large Ross B. Alexander}
+\resumetocwriting
+
+\vfill
+
+\begin{figure}[h]
+	\begin{center}
+	\includegraphics[width = 0.8\linewidth]{title_image}
+	\end{center}
+\end{figure}
+
+\vspace{80pt}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Model Problems}
+
+\subsection{Diffusion Equation}
+
+The \textit{first} model second-order linear ordinary differential equation boundary-value problem consists of:
+\begin{itemize}
+	\item the second-order linear ordinary differential equation:
+	\begin{equation}
+	-u''(x)+k^2u(x)=k^2x \qquad x \in (0, 1)
+	\end{equation}
+	\item the boundary conditions:
+	\begin{equation}
+	u(0) = 0 \quad \textnormal{and} \quad u(1) = 0 
+	\end{equation}
+\end{itemize}
+The physical model of the second-order linear ordinary differential equation boundary-value problem is that of (1) the temperature of a bar for uniaxial heat conduction, and (2) the deflection of a beam for uniaxial deformation with distributed elastic restraint.
+
+
+\subsection{Harmonic Wave Equation}
+
+The \textit{second} model second-order linear ordinary differential equation boundary-value problem consists of:
+\begin{itemize}
+	\item the second-order linear ordinary differential equation:
+	\begin{equation}
+	u''(x)+k^2u(x)=k^2x \qquad x \in (0, 1)
+	\end{equation}
+	\item the boundary conditions:
+	\begin{equation}
+	u(0) = 0 \quad \textnormal{and} \quad u(1) = 0 
+	\end{equation}
+\end{itemize}
+The physical model of the second-order linear ordinary differential equation boundary-value problem is that of the amplitude of standing waves for uniaxial forced vibration of a bar.
+
+\subsection{Convection-Diffusion Equation}
+
+The \textit{third} model second-order linear ordinary differential equation boundary-value problem consists of:
+\begin{itemize}
+	\item the second-order linear ordinary differential equation:
+	\begin{equation}
+	- u''(x)+cu'(x)=0 \qquad x \in (0, 1)
+	\end{equation}
+	\item the boundary conditions:
+	\begin{equation}
+	u(0) = 0 \quad \textnormal{and} \quad u(1) = 1 
+	\end{equation}
+\end{itemize}
+The physical model of the second-order linear ordinary differential equation boundary-value problem is that of the concentration of a flow property that convects and diffuses proportional to the constant $c$. For example, the convection-diffusion equation could represent the concentration of ink as a function of distance in a quasi-one-dimensional flow.
+
+\newpage
+
+\section{Analytical Solutions}
+
+\subsection{Analytical Solution of the Diffusion Equation}
+
+The following equation is the diffusion equation.
+\begin{equation}
+-u''(x)+k^2u(x)=k^2x
+\end{equation}
+
+\subsubsection{Homogeneous Solution}
+
+Let the homogeneous solution to the diffusion equation be defined as $u_h(x)$. Then, $u_h(x)$ must satisfy the following homogeneous ODE.
+\begin{equation}
+-u''_h(x) + k^2u_h(x) = 0
+\end{equation}
+The solution of the homogeneous ODE is assumed to be of the form: 
+\begin{equation}
+u_h(x) = e^{\lambda x}
+\end{equation}
+Taking the second-derivative of $u_h(x)$, substituting the second-derivative into the homogeneous ODE, and reducing the equation yields the \textbf{characteristic equation}.
+\begin{equation}
+u''_h = \lambda^2 e^{\lambda x}
+\end{equation}
+\begin{equation}
+-\lambda^2 e^{\lambda x} + k^2e^{\lambda x} = 0
+\end{equation}
+\begin{equation}
+\mathbf{-\lambda^2 + k^2 = 0}
+\end{equation}
+Solving for $\lambda$ yields:
+\begin{equation}
+\lambda = \pm k
+\end{equation}
+The homogenous solution $u_h(x)$ is then:
+\begin{equation}
+u_h(x) = \alpha e^{kx} + \beta e^{-kx}
+\end{equation}
+By making a transformation with the following relations, a more sophistocated solution can be developed:
+\begin{equation}
+\gamma = \frac{\alpha+\beta}{2} \quad \textnormal{and} \quad \delta = \frac{\alpha-\beta}{2}
+\end{equation}
+\begin{equation}
+u_h(x) = \gamma \frac{e^{kx}+e^{-kx}}{2} + \delta \frac{e^{kx}-e^{-kx}}{2}
+\end{equation}
+\begin{equation}
+\mathbf{u_h(x) = \gamma cosh(kx) + \delta sinh(kx)}
+\end{equation}
+
+\subsubsection{Particular Solution}
+
+Let the particular solution to the diffusion equation be defined as $u_p(x)$. Then, $u_p(x)$ must satisfy the ODE:
+\begin{equation}
+-u''_p(x) + k^2u_p(x) = k^2x
+\end{equation}
+The second-derivative of $u_p(x)$, $u''_p(x)$, is assumed to be zero, and thus yields the particular solution $u_p(x)$:
+\begin{equation}
+k^2u_p(x) = k^2x
+\end{equation}
+\begin{equation}
+\mathbf{u_p(x) = x}
+\end{equation}
+
+\subsubsection{Application of Boundary Conditions}
+
+Given that $u_h(x)$ is a solution to the homogeneous ODE and $u_p(x)$ is a solution to the ODE, then the combination of $u_h(x)$ and $u_p(x)$ is also a solution to the ODE.
+\begin{equation}
+u(x) = u_h(x) + u_p(x)
+\end{equation}
+\begin{equation}
+u(x) = \gamma \cosh(kx) + \delta \sinh(kx) + x
+\end{equation}
+The boundary conditions for the model problem are:
+\begin{equation}
+u(0) = 0 \quad \textnormal{and} \quad u(1) = 0 
+\end{equation}
+Applying the first boundary condition, $u(0) = 0$, we get that $\gamma = 0$:
+\begin{equation}
+u(0) = 0 = \gamma \cosh(0) + \delta \sinh(0) + 0
+\end{equation}
+\begin{equation}
+\gamma = 0
+\end{equation}
+Applying the second boundary condition, $u(1) = 0$, we get that $\delta = \frac{-1}{\sinh(k)}$:
+\begin{equation}
+u(1) = 0 = \delta \sinh(k) + 1
+\end{equation}
+\begin{equation}
+\delta = \frac{-1}{\sinh(k)}
+\end{equation}
+
+\subsubsection{Analytical Solution}
+
+Thus, it is shown that for the negative second-order linear ordinary differential equation with specified boundary conditions (reproduced below) that $u(x)$ is a solution to the differential equation on $x \in (0, 1)$.
+\begin{equation}
+-u''(x)+k^2u(x)=k^2x \qquad x \in (0, 1)
+\end{equation}
+\begin{equation}
+u(0) = 0 \quad \textnormal{and} \quad u(1) = 0 
+\end{equation}
+\begin{equation}
+\mathbf{u(x) = x - \frac{sinh(kx)}{sinh(k)}}
+\end{equation}
+
+The values of $k$ tested in this study were $k \in {1, 2, 5, 10, 20, 50}$. A plot of the analytical solution for values of $k$ is depicted in Figure \ref{fig:analytical_diff}:
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.9\linewidth]{analytical_solution_diffusion}
+		\caption{Analytical Solution to the Diffusion Equation for Values of $k$}
+		\label{fig:analytical_diff}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\subsection{Analytical Solution of the Harmonic Wave Equation}
+
+The following equation is the harmonic wave equation.
+\begin{equation}
+u''(x)+k^2u(x)=k^2x
+\end{equation}
+
+\subsubsection{Homogeneous Solution}
+
+Let the homogeneous solution to the harmonic wave equation be defined as $u_h(x)$. Then, $u_h(x)$ must satisfy the following homogeneous ODE.
+\begin{equation}
+u''_h(x) + k^2u_h(x) = 0
+\end{equation}
+The solution of the homogeneous ODE is assumed to be of the form: 
+\begin{equation}
+u_h(x) = e^{\lambda x}
+\end{equation}
+Taking the second-derivative of $u_h(x)$, substituting the second-derivative into the homogeneous ODE, and reducing the equation yields the \textbf{characteristic equation}.
+\begin{equation}
+u''_h(x) = \lambda^2 e^{\lambda x}
+\end{equation}
+\begin{equation}
+\lambda^2 e^{\lambda x} + k^2e^{\lambda x} = 0
+\end{equation}
+\begin{equation}
+\mathbf{\lambda^2 + k^2 = 0}
+\end{equation}
+Solving for $\lambda$ yields:
+\begin{equation}
+\lambda = \pm ik
+\end{equation}
+The homogenous solution $u_h(x)$ is then:
+\begin{equation}
+u_h(x) = \alpha e^{ikx} + \beta e^{-ikx}
+\end{equation}
+Making a transformation with the following relations, a more sophistocated solution can be developed:
+\begin{equation}
+\gamma = \frac{\alpha+\beta}{2} \quad \textnormal{and} \quad \delta = i\frac{\alpha-\beta}{2}
+\end{equation}
+\begin{equation}
+u_h(x) = \gamma \frac{e^{ikx}+e^{-ikx}}{2} + \delta \frac{e^{ikx}-e^{-ikx}}{2i}
+\end{equation}
+\begin{equation}
+\mathbf{u_h(x) = \gamma cos(kx) + \delta sin(kx)}
+\end{equation}
+
+\subsubsection{Particular Solution}
+
+Let the particular solution to the harmonic wave equation be defined as $u_p(x)$. Then, $u_p(x)$ must satisfy the ODE:
+\begin{equation}
+u''_p(x) + k^2u_p(x) = k^2x
+\end{equation}
+The second-derivative of $u_p(x)$, $u''_p(x)$, is assumed to be zero, and thus yields the particular solution $u_p(x)$:
+\begin{equation}
+k^2u_p(x) = k^2x
+\end{equation}
+\begin{equation}
+\mathbf{u_p(x) = x}
+\end{equation}
+
+\subsubsection{Application of Boundary Conditions}
+
+Given that $u_h(x)$ is a solution to the homogeneous ODE and $u_p(x)$ is a solution to the ODE, then the combination of $u_h(x)$ and $u_p(x)$ is also a solution to the ODE.
+\begin{equation}
+u(x) = u_h(x) + u_p(x)
+\end{equation}
+\begin{equation}
+u(x) = \gamma \cos(kx) + \delta \sin(kx) + x
+\end{equation}
+The boundary conditions for the model problem are:
+\begin{equation}
+u(0) = 0 \quad \textnormal{and} \quad u(1) = 0 
+\end{equation}
+Applying the first boundary condition, $u(0) = 0$, we get that $\gamma = 0$:
+\begin{equation}
+u(0) = 0 = \gamma \cos(0) + \delta \sin(0) + 0
+\end{equation}
+\begin{equation}
+\gamma = 0
+\end{equation}
+Applying the second boundary condition, $u(1) = 0$, we get that $\delta = \frac{-1}{\sin(k)}$:
+\begin{equation}
+u(1) = 0 = \delta \sin(k) + 1
+\end{equation}
+\begin{equation}
+\delta = \frac{-1}{\sin(k)}
+\end{equation}
+
+\subsubsection{Analytical Solution}
+
+Thus, it is shown that for the positive second-order linear ordinary differential equation with specified boundary conditions (reproduced below) that $u(x)$ is a solution to the differential equation on $x \in (0, 1)$.
+\begin{equation}
+u''(x)+k^2u(x)=k^2x \qquad x \in (0, 1)
+\end{equation}
+\begin{equation}
+u(0) = 0 \quad \textnormal{and} \quad u(1) = 0 
+\end{equation}
+\begin{equation}
+\mathbf{u(x) = x - \frac{sin(kx)}{sin(k)}}
+\end{equation}
+
+The values of $k$ tested in this study were $k \in {1, 2, 5, 10, 20, 50}$. A plot of the analytical solution for values of $k$ is depicted in Figure \ref{fig:analytical_harmonic}:
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.9\linewidth]{analytical_solution_harmonic_wave}
+		\caption{Analytical Solution to the Harmonic Wave Equation for Values of $k$}
+		\label{fig:analytical_harmonic}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\subsection{Analytical Solution of the Convection-Diffusion Equation}
+
+The following equation is the homogeneous second-order linear ordinary differential equation (ODE).
+\begin{equation}
+- u''(x)+cu'(x)=0
+\end{equation}
+
+\subsubsection{Homogeneous Solution}
+
+The solution of the homogeneous ODE, $u_h(x)$ is assumed to be of the form: 
+\begin{equation}
+u_h(x) = e^{\lambda x}
+\end{equation}
+Taking the derivatives of $u_h(x)$, substituting them into the homogeneous ODE, and reducing the equation yields the \textbf{characteristic equation}.
+\begin{equation}
+u'_h(x) = \lambda e^{\lambda x}
+\end{equation}
+\begin{equation}
+u''_h(x) = \lambda^2 e^{\lambda x}
+\end{equation}
+\begin{equation}
+-\lambda^2 e^{\lambda x} + c \lambda e^{\lambda x} = 0
+\end{equation}
+\begin{equation}
+\mathbf{-\lambda^2 + c \lambda = \lambda(c-\lambda) = 0}
+\end{equation}
+Solving for $\lambda$ yields:
+\begin{equation}
+\lambda = \{0, c\}
+\end{equation}
+The homogenous solution $u_h(x)$ is then:
+\begin{equation}
+u_h(x) = ae^{0x} + be^{cx} 
+\end{equation}
+\begin{equation}
+\mathbf{u_h(x) = a + be^{cx}}
+\end{equation}
+
+\subsubsection{Application of Boundary Conditions}
+
+Applying the both boundary conditions, $u(0) = 0$ and $u(1) = 1$, we get the system of algebraic equations, which yields $a$ and $b$:
+\begin{equation}
+u_h(0) = 0 = a + b
+\end{equation}
+\begin{equation}
+u_h(1) = 1 = a + be^c
+\end{equation}
+\begin{equation}
+	\begin{bmatrix}
+		1 & 1 \\ 1 & e^c
+	\end{bmatrix}
+	\begin{bmatrix}
+	a \\ b
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+	0 \\ 1
+	\end{bmatrix}
+\end{equation}
+\begin{equation}
+a = \frac{-1}{e^c-1} \quad \textnormal{and} \quad b = \frac{1}{e^c-1}
+\end{equation}
+
+\subsubsection{Analytical Solution}
+
+Thus, it is shown that for the second-order linear ordinary differential equation with specified boundary conditions, that $u(x)$ is a solution to the differential equation on $x \in (0, 1)$.
+\begin{equation}
+-u''(x)+cu'(x)=0 \qquad x \in (0, 1)
+\end{equation}
+\begin{equation}
+u(0) = 0 \quad \textnormal{and} \quad u(1) = 1 
+\end{equation}
+\begin{equation}
+\mathbf{u(x) = \frac{e^{cx}-1}{e^c-1}}
+\end{equation}
+
+The values of $c$ tested in this study were $c \in {1, 2, 5, 10, 20, 50}$. A plot of the analytical solution for values of $c$ is depicted in Figure \ref{fig:analytical_conv_diff}:
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.9\linewidth]{analytical_solution_convection_diffusion}
+		\caption{Analytical Solution to the Convection-Diffusion Equation for Values of $c$}
+		\label{fig:analytical_conv_diff}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\subsection{Analytical Solution of the Quantity of Interest for the Diffusion Equation}
+
+The quantity of interest for the diffusion equation is the first derivative at the right boundary, or $u'(1)$. The differential equation and the analytical solution to the differential equation, respectively, are reproduced below.
+\begin{equation}
+-u''(x)+k^2u(x)=k^2x
+\end{equation}
+\begin{equation}
+u(x) = x - \frac{\sinh(kx)}{\sinh(k)}
+\end{equation}
+Thus, taking the first derivative, and solving at $x = 1$, we obtain the exact quantity of interest:
+\begin{equation}
+u'(x) = 1 - \frac{k\cosh(kx)}{\sinh(k)}
+\end{equation}
+\begin{equation}
+u'(1) = 1 - \frac{k\cosh(k)}{\sinh(k)}
+\end{equation}
+\begin{equation}
+\mathbf{u'(1) = 1 - kcoth(k)}
+\end{equation}
+As $k$ approaches 0, the quantity of interest approaches 0. As $k$ approaches $\infty$, $\coth(x)$ approaches 1, and thus for large $k$, the quantity of interest behaves as $1-k$. Additionally, since $\coth(x)$ approaches 1 as $x$ approaches $\infty$; as $k$ approaches $\infty$, the quantity of interest approaches $\infty$:
+\begin{equation}
+\lim_{k\to 0} [1 - k\coth(k)] = 0
+\end{equation}
+\begin{equation}
+\lim_{k\to\infty} [1 - k\coth(k)] \approx \lim_{k\to\infty} (1-k) = -\infty
+\end{equation}
+
+A table of the exact quantity of interest for the tested values of $k$ is included below (for $k=(20, 50)$, error is less than machine epsilon, $\epsilon$):
+\begin{table}[H]
+	\caption{Analytical Solution to the Quantity of Interest for the Diffusion Equation for Values of $k$}
+	\begin{tabular}{|c|c|}
+		\hline 
+		$\mathbf{k}$ & $\mathbf{u'(1)}$ \\ 
+		\hline 
+		1 & -0.313035 \\ 
+		\hline 
+		2 & -1.074629 \\ 
+		\hline 
+		5 & -4.000454 \\ 
+		\hline 
+		10 & -9.0000000412 \\ 
+		\hline 
+		20 & -19.000000000000000 \\ 
+		\hline 
+		50 & -49.000000000000000 \\ 
+		\hline 
+	\end{tabular}
+\end{table} 
+
+\newpage
+
+\subsection{Analytical Solution of the Quantity of Interest for the Harmonic Wave Equation}
+
+The quantity of interest for the harmonic wave equation is the first derivative at the right boundary, or $u'(1)$. The differential equation and the analytical solution to the differential equation, respectively, are reproduced below.
+\begin{equation}
+u''(x)+k^2u(x)=k^2x
+\end{equation}
+\begin{equation}
+u(x) = x - \frac{\sin(kx)}{\sin(k)}
+\end{equation}
+Thus, taking the first derivative, and solving at $x = 1$, we obtain the exact quantity of interest:
+\begin{equation}
+u'(x) = 1 - \frac{k\cos(kx)}{\sin(k)}
+\end{equation}
+\begin{equation}
+u'(x) = 1 - \frac{k\cos(k)}{\sin(k)}
+\end{equation}
+\begin{equation}
+\mathbf{u'(1) = 1 - kcot(k)}
+\end{equation}
+As $k$ approaches 0, the quantity of interest approaches 0. But, since $\cot(x)$ is oscillatory, the quantity of interest does not converge as $k$ approaches $\infty$:
+\begin{equation}
+\lim_{k\to 0} [1 - k\cot(k)] = 0
+\end{equation}
+\begin{equation}
+\lim_{k\to\infty} [1 - k\cot(k)] = -\infty \;\; to \;\; \infty
+\end{equation}
+
+A table of the exact quantity of interest for the tested values of $k$ is included below:
+\begin{table}[H]
+	\caption{Analytical Solution to the Quantity of Interest for the Harmonic Wave Equation for Values of $k$}
+	\begin{tabular}{|c|c|}
+	\hline 
+	$\mathbf{k}$ & $\mathbf{u'(1)}$ \\ 
+	\hline 
+	1 & 0.3579 \\ 
+	\hline 
+	2 & 1.9153 \\ 
+	\hline 
+	5 & 2.4790 \\ 
+	\hline 
+	10 & -14.4235 \\ 
+	\hline 
+	20 & -7.9399 \\ 
+	\hline 
+	50 & 184.8907 \\ 
+	\hline 
+\end{tabular}
+\end{table} 
+
+\newpage
+
+\subsection{Analytical Solution of the Quantity of Interest for the Convection-Diffusion Equation}
+
+The quantity of interest for the convection-diffusion equation is the first derivative at the right boundary, or $u'(1)$. The differential equation and the analytical solution to the differential equation, respectively, are reproduced below.
+\begin{equation}
+- u''(x)+cu'(x)=0
+\end{equation}
+\begin{equation}
+u(x) = \frac{e^{cx}-1}{e^c-1}
+\end{equation}
+Thus, taking the first derivative, and solving at $x = 1$, we obtain the exact quantity of interest:
+\begin{equation}
+u'(x) = \frac{ce^{cx}}{e^c-1}
+\end{equation}
+\begin{equation}
+\mathbf{u'(1) = \frac{ce^{c}}{e^c-1}}
+\end{equation}
+It can be seen that if $e^c$, or rather $c$, is sufficiently large ($e^c \gg 1$), then the quantity of interest tends to $c$ given that the ratio of $e^c$ and $(e^c -1)$ tends to unity:
+\begin{equation}
+\lim_{c\to\infty} \frac{ce^{c}}{e^c-1} = c
+\end{equation}
+
+A table of the exact quantity of interest for the tested values of $c$ is included below (for $c=50$, error is less than machine epsilon, $\epsilon$):
+\begin{table}[H]
+	\caption{Analytical Solution to the Quantity of Interest for the Convection-Diffusion Equation for Values of $c$}
+\begin{tabular}{|c|c|}
+	\hline 
+	$\mathbf{c}$ & $\mathbf{u'(1)}$ \\ 
+	\hline 
+	1 & 1.58198 \\ 
+	\hline 
+	2 & 2.31304 \\ 
+	\hline 
+	5 & 5.03392 \\ 
+	\hline 
+	10 & 10.00045 \\ 
+	\hline 
+	20 & 20.00000004 \\ 
+	\hline 
+	50 & 50.00000000 \\ 
+	\hline 
+\end{tabular}
+\end{table} 
+
+\newpage
+
+\section{Numerical Methods}
+
+\subsection{Derivations for the Diffusion Equation}
+
+\subsubsection{2nd-Order Central Difference Scheme Finite Difference Method}
+
+\paragraph{Second Derivative}
+
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Adding the Taylor series for $u_{i-1}$ and $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Rearranging terms to solve for $u''_i$:
+\begin{equation}
+u''_i = \frac{u_{i+1} - 2u_i + u_{i-1}}{\Delta x^2} + \mathcal{O}(\Delta x^2) 
+\end{equation}
+
+From this specific second-derivative formulation using the finite difference method, the approximation can be observed to be second-order ($\mathcal{O}(\Delta x^2)$).
+
+\paragraph{Discretized Differential Equation}
+
+The differential equation is:
+\begin{equation}
+-u''(x)+k^2u(x)=k^2x
+\end{equation}
+Discretizing using the above formulas and simplifying yields:
+\begin{equation}
+\left(-1\right) u_{i-1} + \left(2 + k^2\Delta x^2\right) u_{i} + \left(-1\right) u_{i+1} = \left(k^2\Delta x^2 \right)x_i
+\end{equation}
+
+\subsubsection{4th-Order Central Difference Scheme Finite Difference Method}
+
+\paragraph{Second Derivative}
+
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Adding the Taylor series for $u_{i-1}$ and $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \frac{\Delta x^4}{12} u^{(4)}_i + \mathcal{O}(\Delta x^6)
+\end{equation}
+Rearranging for $u''_i$, we get:
+\begin{equation}
+u''_i = \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} - \frac{\Delta x^2}{12} u^{(4)}_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Returning to the differential equation and then taking two additional derivatives, we can arrive at an expression for $u^{(4)}_i$:
+\begin{equation}
+-u''(x)+k^2u(x)=k^2x \qquad x \in (0, 1)
+\end{equation}
+\begin{equation}
+-u^{(4)}(x)+k^2u''(x)=0
+\end{equation}
+\begin{equation}
+u^{(4)}(x) = k^2u''(x)
+\end{equation}
+Substituting in the fourth-derivative expression:
+\begin{equation}
+u''_i = \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} - \frac{\Delta x^2}{12} k^2u''_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Now, exchanging the $u''_i$ term with the earlier derivation and simplifying:
+\begin{equation}
+u''_i = \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} - \frac{\Delta x^2}{12} k^2 \left[\frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} + \mathcal{O}(\Delta x^2) \right] + \mathcal{O}(\Delta x^4)
+\end{equation}
+\begin{equation}
+u''_i = \frac{1}{\Delta x^2} (u_{i+1} -2u_i + u_{i-1}) - \frac{k^2}{12} (u_{i+1} -2u_i + u_{i-1}) + \mathcal{O}(\Delta x^4)
+\end{equation}
+\begin{equation}
+u''_i = \left(\frac{1}{\Delta x^2} - \frac{k^2}{12}\right) (u_{i+1} -2u_i + u_{i-1}) + \mathcal{O}(\Delta x^4)
+\end{equation}
+From this specific second-derivative formulation using the finite difference method, the approximation can be observed to be fourth-order ($\mathcal{O}(\Delta x^4)$).
+
+\paragraph{Discretized Differential Equation}
+
+The differential equation is:
+\begin{equation}
+-u''(x)+k^2u(x)=k^2x
+\end{equation}
+Discretizing using the above formulas and simplifying yields:
+\begin{equation}
+\left(-1 + \frac{k^2\Delta x^2}{12}\right) u_{i-1} + \left(2 + \frac{10 k^2\Delta x^2}{12}\right) u_{i} + \left(-1+ \frac{k^2\Delta x^2}{12}\right) u_{i+1} = \left(k^2\Delta x^2 \right)x_i
+\end{equation}
+
+\subsubsection{1st-Order (p=1) Galerkin Method Finite Element Method}
+
+\subsubsection{2nd-Order (p=2) Galerkin Method Finite Element Method}
+
+\newpage
+
+\subsection{Derivations for the Harmonic Wave Equation}
+
+\subsubsection{2nd-Order Central Difference Scheme Finite Difference Method}
+
+\paragraph{Second Derivative}
+
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Adding the Taylor series for $u_{i-1}$ and $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Rearranging terms to solve for $u''_i$:
+\begin{equation}
+u''_i = \frac{u_{i+1} - 2u_i + u_{i-1}}{\Delta x^2} + \mathcal{O}(\Delta x^2) 
+\end{equation}
+
+From this specific second-derivative formulation using the finite difference method, the approximation can be observed to be second-order ($\mathcal{O}(\Delta x^2)$).
+
+\paragraph{Discretized Differential Equation}
+
+The differential equation is:
+\begin{equation}
+u''(x)+k^2u(x)=k^2x
+\end{equation}
+Discretizing using the above formulas and simplifying yields:
+\begin{equation}
+\left(1\right) u_{i-1} + \left(-2 + k^2\Delta x^2\right) u_{i} + \left(1\right) u_{i+1} = \left(k^2\Delta x^2 \right)x_i
+\end{equation}
+
+\subsubsection{4th-Order Central Difference Scheme Finite Difference Method}
+
+\paragraph{Second Derivative}
+
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Adding the Taylor series for $u_{i-1}$ and $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \frac{\Delta x^4}{12} u^{(4)}_i + \mathcal{O}(\Delta x^6)
+\end{equation}
+Rearranging for $u''_i$, we get:
+\begin{equation}
+u''_i = \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} - \frac{\Delta x^2}{12} u^{(4)}_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Returning to the differential equation and then taking two additional derivatives, we can arrive at an expression for $u^{(4)}_i$:
+\begin{equation}
+u''(x)+k^2u(x)=k^2x \qquad x \in (0, 1)
+\end{equation}
+\begin{equation}
+u^{(4)}(x)+k^2u''(x)=0
+\end{equation}
+\begin{equation}
+u^{(4)}(x) = - k^2u''(x)
+\end{equation}
+Substituting in the fourth-derivative expression:
+\begin{equation}
+u''_i = \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} + \frac{\Delta x^2}{12} k^2u''_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Now, exchanging the $u''_i$ term with the earlier derivation and simplifying:
+\begin{equation}
+u''_i = \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} + \frac{\Delta x^2}{12} k^2 \left[\frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} + \mathcal{O}(\Delta x^2) \right] + \mathcal{O}(\Delta x^4)
+\end{equation}
+\begin{equation}
+u''_i = \frac{1}{\Delta x^2} (u_{i+1} -2u_i + u_{i-1}) + \frac{k^2}{12} (u_{i+1} -2u_i + u_{i-1}) + \mathcal{O}(\Delta x^4)
+\end{equation}
+\begin{equation}
+u''_i = \left(\frac{1}{\Delta x^2} + \frac{k^2}{12}\right) (u_{i+1} -2u_i + u_{i-1}) + \mathcal{O}(\Delta x^4)
+\end{equation}
+From this specific second-derivative formulation using the finite difference method, the approximation can be observed to be fourth-order ($\mathcal{O}(\Delta x^4)$).
+
+\paragraph{Discretized Differential Equation}
+
+The differential equation is:
+\begin{equation}
+u''(x)+k^2u(x)=k^2x
+\end{equation}
+Discretizing using the above formulas and simplifying yields:
+\begin{equation}
+\left(1 + \frac{k^2\Delta x^2}{12}\right) u_{i-1} + \left(-2 + \frac{10 k^2\Delta x^2}{12}\right) u_{i} + \left(1+ \frac{k^2\Delta x^2}{12}\right) u_{i+1} = \left(k^2\Delta x^2 \right)x_i
+\end{equation}
+
+\subsubsection{ 1st-Order (p=1) Galerkin Method Finite Element Method}
+
+\subsubsection{ 2nd-Order (p=2) Galerkin Method Finite Element Method}
+
+\newpage
+
+\subsection{Derivations for the Convection-Diffusion Equation}
+
+\subsubsection{2nd-Order Central Difference Scheme Finite Difference Method}
+
+\paragraph{First Derivative}
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Subtracting the Taylor series for $u_{i-1}$ from $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} - u_{i-1} = 2\Delta xu'_i + \frac{\Delta x^3}{3} u^{(3)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Solving for $u'_i$:
+\begin{equation}
+u'_i = \frac{u_{i+1} - u_{i-1}}{2 \Delta x} + \mathcal{O}(\Delta x^2) 
+\end{equation}
+
+From this specific first-derivative formulation using the finite difference method, the first-derivative approximation can be observed to be second-order ($\mathcal{O}(\Delta x^2)$).
+
+\paragraph{Second Derivative}
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Adding the Taylor series for $u_{i-1}$ and $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Rearranging terms to solve for $u''_i$:
+\begin{equation}
+u''_i = \frac{u_{i+1} - 2u_i + u_{i-1}}{\Delta x^2} + \mathcal{O}(\Delta x^2) 
+\end{equation}
+
+From this specific second-derivative formulation using the finite difference method, the second-derivative approximation can be observed to be second-order ($\mathcal{O}(\Delta x^2)$).
+
+\paragraph{Discretized Differential Equation}
+The differential equation is:
+\begin{equation}
+- u''(x)+cu'(x)=0
+\end{equation}
+Discretizing using the above formulas and simplifying yields:
+\begin{equation}
+-\left(\frac{u_{i+1} - 2u_i + u_{i-1}}{\Delta x^2}\right) + c\left(\frac{u_{i+1} - u_{i-1}}{2 \Delta x}\right) = 0
+\end{equation}
+\begin{equation}
+-\left(u_{i+1} - 2u_i + u_{i-1}\right) + c\Delta x\left( \frac{u_{i+1} - u_{i-1}}{2}\right) = 0
+\end{equation}
+\begin{equation}
+\left(-1-\frac{c\Delta x}{2}\right)u_{i-1} + \left(2\right)u_{i} + \left(-1+\frac{c\Delta x}{2}\right)u_{i+1} = 0
+\end{equation}
+
+\subsubsection{4th-Order Central Difference Scheme Finite Difference Method}
+
+\paragraph{First Derivative}
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Subtracting the Taylor series for $u_{i-1}$ from $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} - u_{i-1} = 2\Delta xu'_i + \frac{\Delta x^3}{3} u^{(3)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Returning to the differential equation and taking one additional derivative:
+\begin{equation}
+u''(x)=cu'(x)
+\end{equation}
+\begin{equation}
+u^{(3)}(x)=cu''(x)
+\end{equation}
+Replacing the second-derivative term with the original differential equation:
+\begin{equation}
+u^{(3)}(x) = c^2u'(x)
+\end{equation}
+Now replacing the third-derivative term in the Taylor series subtraction and then dividing by $2\Delta x$:
+\begin{equation}
+u_{i+1} - u_{i-1} = 2\Delta xu'_i + \frac{c^2\Delta x^3}{3}u'_i  + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+\frac{u_{i+1} - u_{i-1}}{2\Delta x} = \left(1 + \frac{c^2\Delta x^2}{6}\right)u'_i  + \mathcal{O}(\Delta x^4)
+\end{equation}
+Solving for $u'_i$:
+\begin{equation}
+u'_i = \left(1 + \frac{c^2\Delta x^2}{6}\right)^{-1} \frac{u_{i+1} - u_{i-1}}{2\Delta x} + \mathcal{O}(\Delta x^4)
+\end{equation}
+
+From this specific first-derivative formulation using the finite difference method, the first-derivative approximation can be observed to be fourth-order ($\mathcal{O}(\Delta x^4)$).
+
+\paragraph{Second Derivative}
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Adding the Taylor series for $u_{i-1}$ and $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \frac{\Delta x^4}{12} u^{(4)}_i + \mathcal{O}(\Delta x^6)
+\end{equation}
+Returning to the differential equation and taking two additional derivatives:
+\begin{equation}
+u''(x)=cu'(x)
+\end{equation}
+\begin{equation}
+u^{(3)}(x)=cu''(x)
+\end{equation}
+\begin{equation}
+u^{(4)}(x)=cu^{(3)}(x)
+\end{equation}
+Replacing the fourth-derivative and third-derivative terms with the original differential equation, we arrive at:
+\begin{equation}
+u^{(4)}(x) = c^2u''(x)
+\end{equation}
+Now replacing the fourth-derivative term in the Taylor series addition, rearranging, and dividing by $\Delta x^2$:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \frac{c^2\Delta x^4}{12} u''_i + \mathcal{O}(\Delta x^6)
+\end{equation}
+\begin{equation}
+\frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} =  \left(1 + \frac{c^2\Delta x^2}{12} \right)u''_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Rearranging terms to solve for $u''_i$:
+\begin{equation}
+u''_i = \left(1 + \frac{c^2\Delta x^2}{12} \right)^{-1} \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} + \mathcal{O}(\Delta x^4)
+\end{equation}
+
+From this specific second-derivative formulation using the finite difference method, the second-derivative approximation can be observed to be fourth-order ($\mathcal{O}(\Delta x^4)$).
+
+\paragraph{Discretized Differential Equation}
+The differential equation is:
+\begin{equation}
+- u''(x)+cu'(x)=0
+\end{equation}
+Discretizing using the above formulas and simplifying yields:
+\begin{equation}
+-\left(1 + \frac{c^2\Delta x^2}{12} \right)^{-1} \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} + c\left(1 + \frac{c^2\Delta x^2}{6}\right)^{-1} \frac{u_{i+1} - u_{i-1}}{2\Delta x} = 0
+\end{equation}
+\begin{equation}
+\left(-1-\frac{c\Delta x}{2}-\frac{c^2\Delta x^2}{12}\right)u_{i-1} + \left(2+\frac{c^2\Delta x^2}{6}\right)u_{i} + \left(-1+\frac{c\Delta x}{2}-\frac{c^2\Delta x^2}{12}\right)u_{i+1} = 0
+\end{equation}
+
+\subsubsection{1st-Order (p=1) Galerkin Method Finite Element Method}
+
+\subsubsection{2nd-Order (p=2) Galerkin Method Finite Element Method}
+
+\newpage
+
+\section{Results}
+
+\subsection{Finite Difference Method -- Solution Results}
+
+\subsubsection{2nd-Order Central Difference Scheme - Diffusion Equation}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{negative_ode_order_2_k_1}
+		\includegraphics[width = 0.31\linewidth]{error_negative_ode_order_2_k_1}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Diffusion Equation with $k = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{negative_ode_order_2_k_2}
+		\includegraphics[width = 0.31\linewidth]{error_negative_ode_order_2_k_2}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Diffusion Equation with $k = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{negative_ode_order_2_k_5}
+		\includegraphics[width = 0.31\linewidth]{error_negative_ode_order_2_k_5}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Diffusion Equation with $k = 5$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{negative_ode_order_2_k_10}
+		\includegraphics[width = 0.31\linewidth]{error_negative_ode_order_2_k_10}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Diffusion Equation with $k = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{negative_ode_order_2_k_20}
+		\includegraphics[width = 0.31\linewidth]{error_negative_ode_order_2_k_20}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Diffusion Equation with $k = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{negative_ode_order_2_k_50}
+		\includegraphics[width = 0.31\linewidth]{error_negative_ode_order_2_k_50}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Diffusion Equation with $k = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.19\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsubsection{2nd-Order Central Difference Scheme - Harmonic Wave Equation}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{positive_ode_order_2_k_1}
+		\includegraphics[width = 0.31\linewidth]{error_positive_ode_order_2_k_1}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Harmonic Wave Equation with $k = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{positive_ode_order_2_k_2}
+		\includegraphics[width = 0.31\linewidth]{error_positive_ode_order_2_k_2}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Harmonic Wave Equation with $k = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{positive_ode_order_2_k_5}
+		\includegraphics[width = 0.31\linewidth]{error_positive_ode_order_2_k_5}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Harmonic Wave Equation with $k = 5$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{positive_ode_order_2_k_10}
+		\includegraphics[width = 0.31\linewidth]{error_positive_ode_order_2_k_10}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Harmonic Wave Equation with $k = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{positive_ode_order_2_k_20}
+		\includegraphics[width = 0.31\linewidth]{error_positive_ode_order_2_k_20}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Harmonic Wave Equation with $k = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{positive_ode_order_2_k_50}
+		\includegraphics[width = 0.31\linewidth]{error_positive_ode_order_2_k_50}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Harmonic Wave Equation with $k = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.11\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsubsection{2nd-Order Central Difference Scheme - Convection-Diffusion Equation}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_2nd_order_cds_c_1}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_2nd_order_cds_c_1}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Convection-Diffusion Equation with $c = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_2nd_order_cds_c_2}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_2nd_order_cds_c_2}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Convection-Diffusion Equation with $c = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_2nd_order_cds_c_5}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_2nd_order_cds_c_5}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Convection-Diffusion Equation with $c = 5$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_2nd_order_cds_c_10}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_2nd_order_cds_c_10}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Convection-Diffusion Equation with $c = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_2nd_order_cds_c_20}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_2nd_order_cds_c_20}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Convection-Diffusion Equation with $c = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_2nd_order_cds_c_50}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_2nd_order_cds_c_50}
+		\caption{2nd-Order CDS FDM and Pointwise Error for Convection-Diffusion Equation with $c = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.11\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsubsection{4th-Order Central Difference Scheme - Diffusion Equation}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{negative_ode_order_4_k_1}
+		\includegraphics[width = 0.31\linewidth]{error_negative_ode_order_4_k_1}
+		\caption{4th-Order CDS FDM and Pointwise Error for Diffusion Equation with $k = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{negative_ode_order_4_k_2}
+		\includegraphics[width = 0.31\linewidth]{error_negative_ode_order_4_k_2}
+		\caption{4th-Order CDS FDM and Pointwise Error for Diffusion Equation with $k = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{negative_ode_order_4_k_5}
+		\includegraphics[width = 0.31\linewidth]{error_negative_ode_order_4_k_5}
+		\caption{4th-Order CDS FDM and Pointwise Error for Diffusion Equation with $k = 5$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{negative_ode_order_4_k_10}
+		\includegraphics[width = 0.31\linewidth]{error_negative_ode_order_4_k_10}
+		\caption{4th-Order CDS FDM and Pointwise Error for Diffusion Equation with $k = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{negative_ode_order_4_k_20}
+		\includegraphics[width = 0.31\linewidth]{error_negative_ode_order_4_k_20}
+		\caption{4th-Order CDS FDM and Pointwise Error for Diffusion Equation with $k = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{negative_ode_order_4_k_50}
+		\includegraphics[width = 0.31\linewidth]{error_negative_ode_order_4_k_50}
+		\caption{4th-Order CDS FDM and Pointwise Error for Diffusion Equation with $k = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.19\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsubsection{4th-Order Central Difference Scheme - Harmonic Wave Equation}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{positive_ode_order_4_k_1}
+		\includegraphics[width = 0.31\linewidth]{error_positive_ode_order_4_k_1}
+		\caption{4th-Order CDS FDM and Pointwise Error for Harmonic Wave Equation with $k = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{positive_ode_order_4_k_2}
+		\includegraphics[width = 0.31\linewidth]{error_positive_ode_order_4_k_2}
+		\caption{4th-Order CDS FDM and Pointwise Error for Harmonic Wave Equation with $k = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{positive_ode_order_4_k_5}
+		\includegraphics[width = 0.31\linewidth]{error_positive_ode_order_4_k_5}
+		\caption{4th-Order CDS FDM and Pointwise Error for Harmonic Wave Equation with $k = 5$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{positive_ode_order_4_k_10}
+		\includegraphics[width = 0.31\linewidth]{error_positive_ode_order_4_k_10}
+		\caption{4th-Order CDS FDM and Pointwise Error for Harmonic Wave Equation with $k = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{positive_ode_order_4_k_20}
+		\includegraphics[width = 0.31\linewidth]{error_positive_ode_order_4_k_20}
+		\caption{4th-Order CDS FDM and Pointwise Error for Harmonic Wave Equation with $k = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{positive_ode_order_4_k_50}
+		\includegraphics[width = 0.31\linewidth]{error_positive_ode_order_4_k_50}
+		\caption{4th-Order CDS FDM and Pointwise Error for Harmonic Wave Equation with $k = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.11\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsubsection{4th-Order Central Difference Scheme - Convection-Diffusion Equation}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_4th_order_cds_c_1}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_4th_order_cds_c_1}
+		\caption{4th-Order CDS FDM and Pointwise Error for Convection-Diffusion Equation with $c = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_4th_order_cds_c_2}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_4th_order_cds_c_2}
+		\caption{4th-Order CDS FDM and Pointwise Error for Convection-Diffusion Equation with $c = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_4th_order_cds_c_5}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_4th_order_cds_c_5}
+		\caption{4th-Order CDS FDM and Pointwise Error for Convection-Diffusion Equation with $c = 5$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_4th_order_cds_c_10}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_4th_order_cds_c_10}
+		\caption{4th-Order CDS FDM and Pointwise Error for Convection-Diffusion Equation with $c = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_4th_order_cds_c_20}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_4th_order_cds_c_20}
+		\caption{4th-Order CDS FDM and Pointwise Error for Convection-Diffusion Equation with $c = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_4th_order_cds_c_50}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_4th_order_cds_c_50}
+		\caption{4th-Order CDS FDM and Pointwise Error for Convection-Diffusion Equation with $c = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.11\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsection{Finite Element Method -- Solution Results}
+
+\subsubsection{1st-Order (p=1) Galerkin Method - Diffusion Equation}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_diffusion_p_1_k_1}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_diffusion_p_1_k_1}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Diffusion Equation with $k = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_diffusion_p_1_k_2}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_diffusion_p_1_k_2}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Diffusion Equation with $k = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_diffusion_p_1_k_5}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_diffusion_p_1_k_5}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Diffusion Equation with $k = 5$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_diffusion_p_1_k_10}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_diffusion_p_1_k_10}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Diffusion Equation with $k = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_diffusion_p_1_k_20}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_diffusion_p_1_k_20}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Diffusion Equation with $k = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_diffusion_p_1_k_50}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_diffusion_p_1_k_50}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Diffusion Equation with $k = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.11\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsubsection{1st-Order (p=1) Galerkin Method - Harmonic Wave Equation}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_harmonic_p_1_k_1}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_harmonic_p_1_k_1}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Harmonic Wave Equation with $k = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_harmonic_p_1_k_2}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_harmonic_p_1_k_2}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Harmonic Wave Equation with $k = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_harmonic_p_1_k_5}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_harmonic_p_1_k_5}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Harmonic Wave Equation with $k = 5$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_harmonic_p_1_k_10}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_harmonic_p_1_k_10}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Harmonic Wave Equation with $k = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_harmonic_p_1_k_20}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_harmonic_p_1_k_20}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Harmonic Wave Equation with $k = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_harmonic_p_1_k_50}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_harmonic_p_1_k_50}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Harmonic Wave Equation with $k = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.10\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsubsection{1st-Order (p=1) Galerkin Method - Convection-Diffusion Equation}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_convection_p_1_k_1}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_convection_p_1_k_1}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Convection-Diffusion Equation with $c = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_convection_p_1_k_2}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_convection_p_1_k_2}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Convection-Diffusion Equation with $c = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_convection_p_1_k_5}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_convection_p_1_k_5}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Convection-Diffusion Equation with $c = 5$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_convection_p_1_k_10}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_convection_p_1_k_10}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Convection-Diffusion Equation with $c = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_convection_p_1_k_20}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_convection_p_1_k_20}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Convection-Diffusion Equation with $c = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.31\linewidth]{solution_convection_p_1_k_50}
+		\includegraphics[width = 0.31\linewidth]{pointwise_error_convection_p_1_k_50}
+		\caption{1st-Order (p=1) Galerkin Method FEM and Pointwise Error for Convection-Diffusion Equation with $c = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.11\linewidth]{legend}
+\end{center}
+
+\subsubsection{2nd-Order (p=2) Galerkin Method - Diffusion Equation}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_diffusion_p_2_k_1}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_diffusion_p_2_k_1}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Diffusion Equation with $k = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_diffusion_p_2_k_2}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_diffusion_p_2_k_2}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Diffusion Equation with $k = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_diffusion_p_2_k_5}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_diffusion_p_2_k_5}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Diffusion Equation with $k = 5$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_diffusion_p_2_k_10}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_diffusion_p_2_k_10}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Diffusion Equation with $k = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_diffusion_p_2_k_20}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_diffusion_p_2_k_20}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Diffusion Equation with $k = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_diffusion_p_2_k_50}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_diffusion_p_2_k_50}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Diffusion Equation with $k = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.11\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsubsection{2nd-Order (p=2) Galerkin Method - Harmonic Wave Equation}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_harmonic_p_2_k_1}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_harmonic_p_2_k_1}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Harmonic Wave Equation with $k = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_harmonic_p_2_k_2}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_harmonic_p_2_k_2}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Harmonic Wave Equation with $k = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_harmonic_p_2_k_5}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_harmonic_p_2_k_5}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Harmonic Wave Equation with $k = 5$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_harmonic_p_2_k_10}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_harmonic_p_2_k_10}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Harmonic Wave Equation with $k = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_harmonic_p_2_k_20}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_harmonic_p_2_k_20}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Harmonic Wave Equation with $k = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_harmonic_p_2_k_50}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_harmonic_p_2_k_50}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Harmonic Wave Equation with $k = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.10\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsubsection{2nd-Order (p=2) Galerkin Method - Convection-Diffusion Equation}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_convection_p_2_k_1}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_convection_p_2_k_1}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Convection-Diffusion Equation with $c = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_convection_p_2_k_2}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_convection_p_2_k_2}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Convection-Diffusion Equation with $c = 2$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_convection_p_2_k_5}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_convection_p_2_k_5}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Convection-Diffusion Equation with $c = 5$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_convection_p_2_k_10}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_convection_p_2_k_10}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Convection-Diffusion Equation with $c = 10$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_convection_p_2_k_20}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_convection_p_2_k_20}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Convection-Diffusion Equation with $c = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		%\includegraphics[width = 0.31\linewidth]{solution_convection_p_2_k_50}
+		%\includegraphics[width = 0.31\linewidth]{pointwise_error_convection_p_2_k_50}
+		\caption{2nd-Order (p=2) Galerkin Method FEM and Pointwise Error for Convection-Diffusion Equation with $c = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.11\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsection{Finite Difference Method -- Quantity of Interest Results}
+
+\subsubsection{2nd-Order Central Difference Scheme - Diffusion Equation}
+
+\begin{table}[H]
+	\caption{Quantity of Interest for 2nd-Order CDS FDM for Diffusion Equation}	
+	\input{qoi_1_table_negative_2.tex}
+	\input{qoi_2_table_negative_2.tex}
+\end{table}
+
+\newpage
+
+\subsubsection{4th-Order Central Difference Scheme - Diffusion Equation}
+
+\begin{table}[H]
+	\caption{Quantity of Interest for 4th-Order CDS FDM for Diffusion Equation}	
+	\input{qoi_1_table_negative_4.tex}
+	\input{qoi_2_table_negative_4.tex}
+\end{table}
+
+\newpage
+
+\subsubsection{2nd-Order Central Difference Scheme - Harmonic Wave Equation}
+
+\begin{table}[H]
+	\caption{Quantity of Interest for 2nd-Order CDS FDM for Harmonic Wave Equation}	
+	\input{qoi_1_table_positive_2.tex}
+	\input{qoi_2_table_positive_2.tex}
+\end{table}
+
+\newpage
+
+\subsubsection{4th-Order Central Difference Scheme - Harmonic Wave Equation}
+
+\begin{table}[H]
+	\caption{Quantity of Interest for 4th-Order CDS FDM for Harmonic Wave Equation}	
+	\input{qoi_1_table_positive_4.tex}
+	\input{qoi_2_table_positive_4.tex}
+\end{table}
+
+\newpage
+
+\subsubsection{2nd-Order Central Difference Scheme - Convection-Diffusion Equation}
+
+\begin{table}[H]
+	\caption{Quantity of Interest for 2nd-Order CDS FDM for Convection-Diffusion Equation}	
+	\input{qoi_1_table_2nd_order_cds.tex}
+	\input{qoi_2_table_2nd_order_cds.tex}
+\end{table}
+
+\subsubsection{4th-Order Central Difference Scheme - Convection-Diffusion Equation}
+
+\begin{table}[H]
+	\caption{Quantity of Interest for 4th-Order CDS FDM for Convection-Diffusion Equation}
+	\input{qoi_1_table_4th_order_cds.tex}	
+	\input{qoi_2_table_4th_order_cds.tex}	
+\end{table}
+
+\newpage
+
+\subsection{Finite Element Method -- Quantity of Interest Results}
+
+\subsubsection{1st-Order (p=1) Galerkin Method - Diffusion Equation}
+
+\begin{table}[H]
+	\caption{Quantity of Interest for  1st-Order (p=1) Galerkin Method FEM for Diffusion Equation}	
+	\input{qoi_1_table_diffusion_p_1.tex}
+	\input{qoi_2_table_diffusion_p_1.tex}
+\end{table}
+
+\newpage
+
+\subsubsection{2nd-Order (p=2) Galerkin Method - Diffusion Equation}
+
+\begin{table}[H]
+	\caption{Quantity of Interest for  2nd-Order (p=2) Galerkin Method FEM for Diffusion Equation}	
+	%\input{qoi_1_table_diffusion_p_2.tex}
+	%\input{qoi_2_table_diffusion_p_2.tex}
+\end{table}
+
+\newpage
+
+\subsubsection{1st-Order (p=1) Galerkin Method - Harmonic Wave Equation}
+
+\begin{table}[H]
+	\caption{Quantity of Interest for  1st-Order (p=1) Galerkin Method FEM for Harmonic Wave Equation}	
+	\input{qoi_1_table_harmonic_p_1.tex}
+	\input{qoi_2_table_harmonic_p_1.tex}
+\end{table}
+
+\newpage
+
+\subsubsection{2nd-Order (p=2) Galerkin Method - Harmonic Wave Equation}
+
+\begin{table}[H]
+	\caption{Quantity of Interest for  2nd-Order (p=2) Galerkin Method FEM for Harmonic Wave Equation}	
+	%\input{qoi_1_table_harmonic_p_2.tex}
+	%\input{qoi_2_table_harmonic_p_2.tex}
+\end{table}
+
+\newpage
+
+\subsubsection{1st-Order (p=1) Galerkin Method - Convection-Diffusion Equation}
+
+\begin{table}[H]
+	\caption{Quantity of Interest for  1st-Order (p=1) Galerkin Method FEM for Convection-Diffusion Equation}	
+	\input{qoi_1_table_convection_p_1.tex}
+	\input{qoi_2_table_convection_p_1.tex}
+\end{table}
+
+\newpage
+
+\subsubsection{2nd-Order (p=2) Galerkin Method - Convection-Diffusion Equation}
+
+\begin{table}[H]
+	\caption{Quantity of Interest for  2nd-Order (p=2) Galerkin Method FEM for Convection-Diffusion Equation}	
+	%\input{qoi_1_table_convection_p_2.tex}
+	%\input{qoi_2_table_convection_p_2.tex}
+\end{table}
+
+\newpage
+
+\section{Convergence Analysis}
+
+\subsection{Rate of Convergence Derivation}
+
+Let the error for a particular mesh size $\Delta x$ be $E\left(\Delta x\right)$:
+\begin{equation}
+E\left(\Delta x\right) = C\left(\Delta x\right)^\beta
+\end{equation}
+Then for a smaller mesh size $\frac{\Delta x}{2}$ we have:
+\begin{equation}
+E\left(\frac{\Delta x}{2}\right) = C\left(\frac{\Delta x}{2}\right)^\beta
+\end{equation}
+Dividing the error at each mesh size and taking the logarithm:
+\begin{equation}
+\frac{E\left(\Delta x\right)}{E\left(\frac{\Delta x}{2}\right)} = \frac{C\left(\Delta x\right)^\beta}{C\left(\frac{\Delta x}{2}\right)^\beta} = 2^\beta
+\end{equation}
+\begin{equation}
+\log\left[\frac{E\left(\Delta x\right)}{E\left(\frac{\Delta x}{2}\right)}\right] = \log(2^\beta)
+\end{equation}
+\begin{equation}
+\log\left[\frac{E\left(\Delta x\right)}{E\left(\frac{\Delta x}{2}\right)}\right] = \beta \log(2)
+\end{equation}
+Rearranging for $\beta$ and simplifying:
+\begin{equation}
+\beta = \frac{1}{\log(2)} \left[\log\left(E\left(\Delta x\right)\right) - \log\left(E\left(\frac{\Delta x}{2}\right)\right)\right] 
+\end{equation}
+Denoting $E^*_{\Delta x} = \log\left(E\left(\Delta x\right)\right)$:
+\begin{equation}
+\mathbf{\beta = \frac{E^*_{\Delta x} - E^*_{\frac{\Delta x}{2}}}{\log (2)}}
+\end{equation}
+
+\newpage
+
+\subsection{Rate of Convergence for the Diffusion Equation -- Results}
+
+\subsubsection{2nd-Order Central Difference Scheme Finite Difference Method}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.5\linewidth]{negative_ode_order_2_fd_order_2}
+		\caption{2nd-Order CDS FDM for the Diffusion Equation}	
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\input{negative_ode_2_fdm_2_dudx.tex}
+	\caption{2nd-Order CDS FDM for the Diffusion Equation -- Rate of Convergence Values}	
+\end{table}
+
+\newpage
+
+\subsubsection{4th-Order Central Difference Scheme Finite Difference Method}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.5\linewidth]{negative_ode_order_4_fd_order_4}
+		\caption{4th-Order CDS FDM for the Diffusion Equation}	
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\input{negative_ode_4_fdm_4_dudx.tex}
+	\caption{4th-Order CDS FDM for the Diffusion Equation -- Rate of Convergence Values}	
+\end{table}
+
+\newpage
+
+\subsubsection{1st-Order (p=1) Galerkin Method Finite Element Method}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.5\linewidth]{convergence_diffusion_p_1}
+		\caption{ 1st-Order (p=1) Galerkin Method FEM for the Diffusion Equation}	
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\input{roc_diffusion_p_1.tex}
+	\caption{ 1st-Order (p=1) Galerkin Method FEM for the Diffusion Equation -- Rate of Convergence Values}	
+\end{table}
+
+\newpage
+
+\subsubsection{2nd-Order (p=2) Galerkin Method Finite Element Method}
+
+%\begin{figure}[H]
+%	\begin{center}
+%		\includegraphics[width = 0.5\linewidth]{convergence_diffusion_p_2}
+%		\caption{ 2nd-Order (p=2) Galerkin Method FEM for the Diffusion Equation}	
+%	\end{center}
+%\end{figure}
+%
+%\begin{table}[H]
+%	\input{roc_diffusion_p_2.tex}
+%	\caption{ 2nd-Order (p=2) Galerkin Method FEM for the Diffusion Equation -- Rate of Convergence Values}	
+%\end{table}
+
+\newpage
+
+\subsection{Rate of Convergence for the Harmonic Wave Equation -- Results}
+
+\subsubsection{2nd-Order Central Difference Scheme Finite Difference Method}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.5\linewidth]{positive_ode_order_2_fd_order_2}
+		\caption{2nd-Order CDS FDM for the Harmonic Wave Equation}	
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\input{positive_ode_2_fdm_2_dudx.tex}
+	\caption{2nd-Order CDS FDM for the Harmonic Wave Equation -- Rate of Convergence Values}	
+\end{table}
+
+\newpage
+
+\subsubsection{4th-Order Central Difference Scheme Finite Difference Method}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.5\linewidth]{positive_ode_order_4_fd_order_4}
+		\caption{4th-Order CDS FDM for the Harmonic Wave Equation}	
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\input{positive_ode_4_fdm_4_dudx.tex}
+	\caption{2nd-Order CDS FDM for the Harmonic Wave Equation -- Rate of Convergence Values}	
+\end{table}
+
+\newpage
+
+\subsubsection{1st-Order (p=1) Galerkin Method Finite Element Method}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.5\linewidth]{convergence_harmonic_p_1}
+		\caption{ 1st-Order (p=1) Galerkin Method FEM for the Harmonic Wave Equation}	
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\input{roc_harmonic_p_1.tex}
+	\caption{ 1st-Order (p=1) Galerkin Method FEM for the Harmonic Wave Equation -- Rate of Convergence Values}	
+\end{table}
+
+\newpage
+
+\subsubsection{2nd-Order (p=2) Galerkin Method Finite Element Method}
+
+%\begin{figure}[H]
+%	\begin{center}
+%		\includegraphics[width = 0.5\linewidth]{convergence_harmonic_p_2}
+%		\caption{ 2nd-Order (p=2) Galerkin Method FEM for the Harmonic Wave Equation}	
+%	\end{center}
+%\end{figure}
+%
+%\begin{table}[H]
+%	\input{roc_harmonic_p_2.tex}
+%	\caption{ 2nd-Order (p=2) Galerkin Method FEM for the Harmonic Wave Equation -- Rate of Convergence Values}	
+%\end{table}
+
+\newpage
+
+\subsection{Rate of Convergence for the Convection-Diffusion Equation -- Results}
+
+\subsubsection{2nd-Order Central Difference Scheme Finite Difference Method}
+
+Note: The quantity of interest for the 2nd-order CDS FDM is extracted using the 2nd-order first-derivative extraction - yielding the quantity of interest with an error of $\mathcal{O}(\Delta x^2)$.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.45\linewidth]{convergence_2nd_order_cds}
+		\caption{2nd-Order CDS FDM for the Convection-Diffusion Equation}	
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\input{roc_table_2nd_order_cds.tex}
+	\caption{2nd-Order CDS FDM for the Convection-Diffusion Equation -- Rate of Convergence Values}	
+\end{table}
+
+\newpage
+
+\subsubsection{4th-Order Central Difference Scheme Finite Difference Method}
+
+Note: The quantity of interest for the 4th-order CDS FDM is extracted using the 4th-order first-derivative extraction - yielding the quantity of interest with an error of $\mathcal{O}(\Delta x^4)$.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.5\linewidth]{convergence_4th_order_cds}
+		\caption{4th-Order CDS FDM for the Convection-Diffusion Equation}	
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\input{roc_table_4th_order_cds.tex}
+	\caption{4th-Order CDS FDM for the Convection-Diffusion Equation -- Rate of Convergence Values}	
+\end{table}
+
+\newpage
+
+\subsubsection{1st-Order (p=1) Galerkin Method Finite Element Method}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.5\linewidth]{convergence_convection_p_1}
+		\caption{1st-Order (p=1) Galerkin Method FEM for the Convection-Diffusion Equation}	
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\input{roc_convection_p_1.tex}
+	\caption{1st-Order (p=1) Galerkin Method FEM for the Convection-Diffusion Equation -- Rate of Convergence Values}	
+\end{table}
+
+\newpage
+
+\subsubsection{2nd-Order (p=2) Galerkin Method Finite Element Method}
+
+%\begin{figure}[H]
+%	\begin{center}
+%		\includegraphics[width = 0.5\linewidth]{convergence_convection_p_2}
+%		\caption{ 2nd-Order (p=2) Galerkin Method FEM for the Convection-Diffusion Equation}	
+%	\end{center}
+%\end{figure}
+%
+%\begin{table}[H]
+%	\input{roc_convection_p_2.tex}
+%	\caption{ 2nd-Order (p=2) Galerkin Method FEM for the Convection-Diffusion Equation -- Rate of Convergence Values}	
+%\end{table}
+
+\newpage
+
+
+
+
+\section{Discussion}
+
+A critical view of the first-order Galerkin method FEM solution results and quantity of interest convergence shows that the rate of convergence $\beta$ is approximately 2. For the diffusion equation, the first-order Galerkin method FEM has significant error at small mesh size, but decreases quickly until the error tolerance is reached. For the harmonic wave equation, the first-order Galerkin method FEM has significant error at small mesh sizes and in some cases, the error increase due to eigenvalue resonances, but then decreases quickly until the error tolerance is reached. Finally for the convection-diffusion equation, there are large initial errors at small mesh sizes. Once mesh sizes are sufficiently small, error begins to decrease and then plateaus at the error tolerance.
+
+A simultaneous comparison of all of the methods for various values of $k$ and $c$ proves that:
+
+\begin{itemize}
+	\item the second-order central difference scheme finite difference method is quadratically convergent
+	\item the fourth-order central difference scheme finite difference method is quartically convergent
+	\item the first-order Galerkin method finite element method is quadratically convergent
+\end{itemize}
+
+Further analysis would likely yield that the second-order Galerkin method is quartically convergent.
+
+\newpage
+
+\appendix
+
+\section{$u(x)$ v. $u_{exact}(x)$ Tables}
+
+\textit{Error tables are available for all mesh spacings through the MATLAB code or by request} (ross.alexander19@tamu.edu). The tables are not printed here due to printing constraints.
+
+\newpage
+
+\section{MATLAB Code}
+
+\begin{lstlisting}
+clc; close all; clear all;
+
+%odeString = 'diffusion_p_1';
+%odeString = 'harmonic_p_1';
+odeString = 'convection_p_1';
+
+%odeType = 'Diffusion';
+%odeType = 'Harmonic';
+odeType = 'Convection';
+
+meshOrder   = 1:18;
+meshDx      = 0.5.^meshOrder;
+
+rowID = 0;
+
+plotGen = true;
+plotSave = true;
+tableSaveUx = false;
+tableSaveRoc = false;
+tableSaveError = false;
+
+%% FEM for p = 1
+
+for k = [1 2 5 10 20 50]
+
+rowID = rowID + 1;
+colID = 0;
+
+if plotGen
+
+fig1 = figure(1);
+xlabel('x');    ylabel('u(x)');
+grid on;        grid minor;
+box on;         hold on;
+set(gcf, 'Position', [1 1 624 550])
+
+if strcmpi(odeType, 'diffusion')
+titleString = strcat('p=1 Galerkin FEM for the Diffusion Equation for k=', num2str(k));
+elseif strcmpi(odeType, 'harmonic')
+titleString = strcat('p=1 Galerkin FEM for the Harmonic Equation for k=', num2str(k));
+elseif strcmpi(odeType, 'convection')
+titleString = strcat('p=1 Galerkin FEM for the Convection-Diffusion Equation for c=', num2str(k));
+end
+
+title(titleString)
+
+fig2 = figure(2);
+xlabel('x');    ylabel('\epsilon_{rel}');
+grid on;        grid minor;
+box on;         hold on;
+set(gcf, 'Position', [1 1 624 550])
+
+title(titleString)
+
+end
+
+for dx = meshDx
+
+nx = 1 / dx + 1;
+x = linspace(0, 1, nx);
+f = zeros(nx, 1);
+colID = colID + 1;
+
+for i = 2:nx-1
+if strcmpi('diffusion', odeType)
+f(i) = k^2*dx^2/6*(x(i-1)+4*x(i)+x(i+1));
+elseif strcmpi('harmonic', odeType)
+f(i) = k^2*dx^2/6*(x(i-1)+4*x(i)+x(i+1));
+elseif strcmpi('convection', odeType)
+f(i) = 0;
+end
+end
+
+if strcmpi('diffusion', odeType)
+alpha = -1 + k^2*dx^2/6;
+beta  = 2 + 4*k^2*dx^2/6;
+gamma = -1 + k^2*dx^2/6;
+elseif strcmpi('harmonic', odeType)
+alpha = 1 + k^2*dx^2/6;
+beta  = -2 + 4*k^2*dx^2/6;
+gamma = 1 + k^2*dx^2/6;
+elseif strcmpi('convection', odeType)
+alpha = -1 - k*dx/2;
+beta  = 2;
+gamma = -1 + k*dx/2;
+end
+
+A = gallery('tridiag', nx, alpha, beta, gamma);
+
+A(1, 1) = 1;    A(1, 2) = 0;
+A(nx, nx) = 1;  A(nx, nx-1) = 0;
+
+if strcmpi('diffusion', odeType)
+f(1) = 0;       f(nx) = 0;
+elseif strcmpi('harmonic', odeType)
+f(1) = 0;       f(nx) = 0;
+elseif strcmpi('convection', odeType)
+f(1) = 0;       f(nx) = 1;
+end
+
+u = A\f;
+
+if plotGen && dx >= meshDx(8)
+
+figure(1)
+plot(x, u, 'linewidth', 1)
+
+end
+
+if strcmpi(odeType, 'diffusion')
+dudx.fem(rowID, colID) = - u(end-1) / dx - dx * k^2 / 2;
+dudx.exact(rowID, colID) = 1 - k * cosh(k) / sinh(k);
+ux.exact = x - sinh(k*x) ./ sinh(k);
+elseif strcmpi(odeType, 'harmonic')
+dudx.fem(rowID, colID) = - u(end-1) / dx + dx * k^2 / 2;
+ux.exact = x - sin(k*x) ./ sin(k);
+dudx.exact(rowID, colID) = 1 - k * cos(k) / sin(k);
+elseif strcmpi(odeType, 'convection')
+dudx.fem(rowID, colID) = (1 -k*dx/2)^-1 * (1 - u(end-1)) / dx;
+ux.exact = (exp(k*x) - 1) / (exp(k) - 1);
+dudx.exact(rowID, colID) = k*exp(k) / (exp(k) - 1);
+end
+
+if plotGen && dx >= meshDx(8)
+
+figure(2)
+plot(x(2:end-1), abs(ux.exact(2:end-1)'-u(2:end-1)) ./ ...
+abs(ux.exact(2:end-1)')*100, 'o-')
+
+end
+
+if tableSaveUx && dx >= meshDx(5)
+
+colLabels = {'$x$', '$u(x)$', '$\bar{u}(x)$', '$\epsilon_{rel}$'};
+
+matrix2latex([x' u ux.exact' (abs(ux.exact'-u)./abs(ux.exact')*100)], ...
+strcat('pointwise_error_table_dx_', num2str(nx), '_', odeString, '.tex'), ...
+'columnLabels', colLabels, 'alignment', 'c', 'format', '%1.2e')
+
+end
+
+end
+
+if plotGen
+
+figure(1)
+
+if strcmpi(odeType, 'diffusion')
+fplot(@(x) x-sinh(k*x)/sinh(k), [0 1], '-k', 'linewidth', 1.5)
+elseif strcmpi(odeType, 'harmonic')
+fplot(@(x) x-sin(k*x)/sin(k), [0 1], '-k', 'linewidth', 1.5)
+elseif strcmpi(odeType, 'convection')
+fplot(@(x) (exp(k*x)-1)/(exp(k) - 1), [0 1], '-k', 'linewidth', 1.5)
+end
+
+%             legend('\Deltax = (1/2)^1', '\Deltax = (1/2)^2', '\Deltax = (1/2)^3', ...
+%                 '\Deltax = (1/2)^4', '\Deltax = (1/2)^5', '\Deltax = (1/2)^6', ...
+%                 '\Deltax = (1/2)^7', '\Deltax = (1/2)^8', 'Analytical Solution', ...
+%                 'location', 'eastoutside')
+
+drawnow
+
+figure(2)
+
+%             legend('\Deltax = (1/2)^1', '\Deltax = (1/2)^2', '\Deltax = (1/2)^3', ...
+%                 '\Deltax = (1/2)^4', '\Deltax = (1/2)^5', '\Deltax = (1/2)^6', ...
+%                 '\Deltax = (1/2)^7', '\Deltax = (1/2)^8', 'location', 'eastoutside')
+set(gca, 'YScale', 'log')
+
+drawnow
+
+if plotSave
+
+figure(1)
+figureString = strcat('solution_', lower(odeString), '_k_', num2str(k));
+saveas(gcf, figureString, 'epsc')
+
+figure(2)
+figureString = strcat('pointwise_error_', lower(odeString), '_k_', num2str(k));
+saveas(gcf, figureString, 'epsc')
+
+close gcf;  close gcf
+
+end
+
+end
+
+end
+
+%% Convergence Analysis
+
+relError = abs(dudx.exact-dudx.fem) ./ abs(dudx.exact) * 100;
+
+if plotGen
+
+figure
+xlabel('-log_{10}(\Deltax)');   ylabel('log_{10}(\epsilon_{rel})');
+grid on;                        grid minor;
+box on;                         hold on;
+ylim([10^-12 10^4])
+
+for kID = 1:6
+loglog(-meshDx, relError(kID, :), '-o', 'linewidth', 1.25);
+end
+
+if strcmpi(odeType, 'diffusion')
+titleString = strcat(odeType, ' Equation Convergence for p=1');
+elseif strcmpi(odeType, 'harmonic')
+titleString = strcat(odeType, ' Equation Convergence for p=1');
+elseif strcmpi(odeType, 'convection')
+titleString = strcat(odeType, ' Equation Convergence for p=1');
+end
+
+title(titleString)
+
+if ~strcmpi(odeType, 'convection')
+legend('k=1', 'k=2', 'k=5', 'k=10', 'k=20', 'k=50')
+else
+legend('c=1', 'c=2', 'c=5', 'c=10', 'c=20', 'c=50')
+end
+
+set(gca, 'XScale', 'log');  set(gca, 'YScale', 'log');
+drawnow
+
+if plotSave
+
+figureString = strcat('convergence_', odeString);
+saveas(gcf, figureString, 'epsc')
+close gcf
+
+end
+
+end
+
+%% Rate of Convergence Analysis
+
+logRelError = log10(relError);
+
+for kID = 1:6
+
+for rocID = 1:length(logRelError) - 1
+roc(kID, rocID) = (logRelError(kID, rocID+1) - logRelError(kID, rocID)) / -log10(2);
+end
+
+end
+
+if ~strcmpi(odeType, 'convection')
+colLabels = {'$\Delta x$', '$\beta(k=1)$', '$\beta(k=2)$', '$\beta(k=5)$', ...
+'$\beta(k=10)$', '$\beta(k=20)$', '$\beta(k=50)$'};
+else
+colLabels = {'$\Delta x$', '$\beta(c=1)$', '$\beta(c=2)$', '$\beta(c=5)$', ...
+'$\beta(c=10)$', '$\beta(c=20)$', '$\beta(c=50)$'};
+end
+
+if tableSaveRoc
+
+matrix2latex([meshDx(1:17)' roc'], strcat('roc_', odeString, '.tex'), ...
+'columnLabels', colLabels, 'alignment', 'c', 'format', '%5.4f')
+
+end
+
+if ~strcmpi(odeType, 'convection')
+colLabels1 = {'$\Delta x$', '$u''_{k=1}(1)$', '$u''_{k=2}(1)$', '$u''_{k=5}(1)$', ...
+'$\bar{u}''_{k=1}(1)$', '$\bar{u}''_{k=2}(1)$', '$\bar{u}''_{k=5}(1)$', ...
+'$\epsilon''_{rel,k=1}$', '$\epsilon''_{rel,k=2}$', '$\epsilon''_{rel,k=5}$'};
+colLabels2 = {'$\Delta x$', '$u''_{k=10}(1)$', '$u''_{k=20}(1)$', '$u''_{k=50}(1)$', ...
+'$\bar{u}''_{k=10}(1)$', '$\bar{u}''_{k=20}(1)$', '$\bar{u}''_{k=50}(1)$', ...
+'$\epsilon''_{rel,k=10}$', '$\epsilon''_{rel,k=20}$', '$\epsilon''_{rel,k=50}$'};
+else
+colLabels1 = {'$\Delta x$', '$u''_{c=1}(1)$', '$u''_{c=2}(1)$', '$u''_{c=5}(1)$', ...
+'$\bar{u}''_{c=1}(1)$', '$\bar{u}''_{c=2}(1)$', '$\bar{u}''_{c=5}(1)$', ...
+'$\epsilon''_{rel,c=1}$', '$\epsilon''_{rel,c=2}$', '$\epsilon''_{rel,c=5}$'};
+colLabels2 = {'$\Delta x$', '$u''_{c=10}(1)$', '$u''_{c=20}(1)$', '$u''_{c=50}(1)$', ...
+'$\bar{u}''_{c=10}(1)$', '$\bar{u}''_{c=20}(1)$', '$\bar{u}''_{c=50}(1)$', ...
+'$\epsilon''_{rel,c=10}$', '$\epsilon''_{rel,c=20}$', '$\epsilon''_{rel,c=50}$'};
+end
+
+if tableSaveError
+
+matrix2latex([meshDx(1:end)' dudx.fem(1:3,:)', dudx.exact(1:3, :)', relError(1:3, :)'], ...
+strcat('qoi_1_table_', lower(odeString), '.tex'), 'columnLabels', colLabels1, ...
+'alignment', 'c', 'format', '%5.4f')
+matrix2latex([meshDx(1:end)' dudx.fem(4:6,:)', dudx.exact(4:6, :)', relError(4:6, :)'], ...
+strcat('qoi_2_table_', lower(odeString), '.tex'), 'columnLabels', colLabels2, ...
+'alignment', 'c', 'format', '%5.4f')
+
+end
+\end{lstlisting}
+
+\end{document}

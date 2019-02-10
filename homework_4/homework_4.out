@@ -1,0 +1,88 @@
+\BOOKMARK [0][-]{Doc-Start}{AERO 430 \205 Numerical Simulation \040Comparison of Finite Element Methods and Finite Difference Methods for Second-Order Linear Ordinary Differential Equation Boundary-Value Problems \040Ross B. Alexander}{}% 1
+\BOOKMARK [1][-]{section.1}{Model Problems}{Doc-Start}% 2
+\BOOKMARK [2][-]{subsection.1.1}{Diffusion Equation}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.2}{Harmonic Wave Equation}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.3}{Convection-Diffusion Equation}{section.1}% 5
+\BOOKMARK [1][-]{section.2}{Analytical Solutions}{Doc-Start}% 6
+\BOOKMARK [2][-]{subsection.2.1}{Analytical Solution of the Diffusion Equation}{section.2}% 7
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Homogeneous Solution}{subsection.2.1}% 8
+\BOOKMARK [3][-]{subsubsection.2.1.2}{Particular Solution}{subsection.2.1}% 9
+\BOOKMARK [3][-]{subsubsection.2.1.3}{Application of Boundary Conditions}{subsection.2.1}% 10
+\BOOKMARK [3][-]{subsubsection.2.1.4}{Analytical Solution}{subsection.2.1}% 11
+\BOOKMARK [2][-]{subsection.2.2}{Analytical Solution of the Harmonic Wave Equation}{section.2}% 12
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Homogeneous Solution}{subsection.2.2}% 13
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Particular Solution}{subsection.2.2}% 14
+\BOOKMARK [3][-]{subsubsection.2.2.3}{Application of Boundary Conditions}{subsection.2.2}% 15
+\BOOKMARK [3][-]{subsubsection.2.2.4}{Analytical Solution}{subsection.2.2}% 16
+\BOOKMARK [2][-]{subsection.2.3}{Analytical Solution of the Convection-Diffusion Equation}{section.2}% 17
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Homogeneous Solution}{subsection.2.3}% 18
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Application of Boundary Conditions}{subsection.2.3}% 19
+\BOOKMARK [3][-]{subsubsection.2.3.3}{Analytical Solution}{subsection.2.3}% 20
+\BOOKMARK [2][-]{subsection.2.4}{Analytical Solution of the Quantity of Interest for the Diffusion Equation}{section.2}% 21
+\BOOKMARK [2][-]{subsection.2.5}{Analytical Solution of the Quantity of Interest for the Harmonic Wave Equation}{section.2}% 22
+\BOOKMARK [2][-]{subsection.2.6}{Analytical Solution of the Quantity of Interest for the Convection-Diffusion Equation}{section.2}% 23
+\BOOKMARK [1][-]{section.3}{Numerical Methods}{Doc-Start}% 24
+\BOOKMARK [2][-]{subsection.3.1}{Derivations for the Diffusion Equation}{section.3}% 25
+\BOOKMARK [3][-]{subsubsection.3.1.1}{2nd-Order Central Difference Scheme Finite Difference Method}{subsection.3.1}% 26
+\BOOKMARK [3][-]{subsubsection.3.1.2}{4th-Order Central Difference Scheme Finite Difference Method}{subsection.3.1}% 27
+\BOOKMARK [3][-]{subsubsection.3.1.3}{1st-Order \(p=1\) Galerkin Method Finite Element Method}{subsection.3.1}% 28
+\BOOKMARK [3][-]{subsubsection.3.1.4}{2nd-Order \(p=2\) Galerkin Method Finite Element Method}{subsection.3.1}% 29
+\BOOKMARK [2][-]{subsection.3.2}{Derivations for the Harmonic Wave Equation}{section.3}% 30
+\BOOKMARK [3][-]{subsubsection.3.2.1}{2nd-Order Central Difference Scheme Finite Difference Method}{subsection.3.2}% 31
+\BOOKMARK [3][-]{subsubsection.3.2.2}{4th-Order Central Difference Scheme Finite Difference Method}{subsection.3.2}% 32
+\BOOKMARK [3][-]{subsubsection.3.2.3}{ 1st-Order \(p=1\) Galerkin Method Finite Element Method}{subsection.3.2}% 33
+\BOOKMARK [3][-]{subsubsection.3.2.4}{ 2nd-Order \(p=2\) Galerkin Method Finite Element Method}{subsection.3.2}% 34
+\BOOKMARK [2][-]{subsection.3.3}{Derivations for the Convection-Diffusion Equation}{section.3}% 35
+\BOOKMARK [3][-]{subsubsection.3.3.1}{2nd-Order Central Difference Scheme Finite Difference Method}{subsection.3.3}% 36
+\BOOKMARK [3][-]{subsubsection.3.3.2}{4th-Order Central Difference Scheme Finite Difference Method}{subsection.3.3}% 37
+\BOOKMARK [3][-]{subsubsection.3.3.3}{1st-Order \(p=1\) Galerkin Method Finite Element Method}{subsection.3.3}% 38
+\BOOKMARK [3][-]{subsubsection.3.3.4}{2nd-Order \(p=2\) Galerkin Method Finite Element Method}{subsection.3.3}% 39
+\BOOKMARK [1][-]{section.4}{Results}{Doc-Start}% 40
+\BOOKMARK [2][-]{subsection.4.1}{Finite Difference Method \205 Solution Results}{section.4}% 41
+\BOOKMARK [3][-]{subsubsection.4.1.1}{2nd-Order Central Difference Scheme - Diffusion Equation}{subsection.4.1}% 42
+\BOOKMARK [3][-]{subsubsection.4.1.2}{2nd-Order Central Difference Scheme - Harmonic Wave Equation}{subsection.4.1}% 43
+\BOOKMARK [3][-]{subsubsection.4.1.3}{2nd-Order Central Difference Scheme - Convection-Diffusion Equation}{subsection.4.1}% 44
+\BOOKMARK [3][-]{subsubsection.4.1.4}{4th-Order Central Difference Scheme - Diffusion Equation}{subsection.4.1}% 45
+\BOOKMARK [3][-]{subsubsection.4.1.5}{4th-Order Central Difference Scheme - Harmonic Wave Equation}{subsection.4.1}% 46
+\BOOKMARK [3][-]{subsubsection.4.1.6}{4th-Order Central Difference Scheme - Convection-Diffusion Equation}{subsection.4.1}% 47
+\BOOKMARK [2][-]{subsection.4.2}{Finite Element Method \205 Solution Results}{section.4}% 48
+\BOOKMARK [3][-]{subsubsection.4.2.1}{1st-Order \(p=1\) Galerkin Method - Diffusion Equation}{subsection.4.2}% 49
+\BOOKMARK [3][-]{subsubsection.4.2.2}{1st-Order \(p=1\) Galerkin Method - Harmonic Wave Equation}{subsection.4.2}% 50
+\BOOKMARK [3][-]{subsubsection.4.2.3}{1st-Order \(p=1\) Galerkin Method - Convection-Diffusion Equation}{subsection.4.2}% 51
+\BOOKMARK [3][-]{subsubsection.4.2.4}{2nd-Order \(p=2\) Galerkin Method - Diffusion Equation}{subsection.4.2}% 52
+\BOOKMARK [3][-]{subsubsection.4.2.5}{2nd-Order \(p=2\) Galerkin Method - Harmonic Wave Equation}{subsection.4.2}% 53
+\BOOKMARK [3][-]{subsubsection.4.2.6}{2nd-Order \(p=2\) Galerkin Method - Convection-Diffusion Equation}{subsection.4.2}% 54
+\BOOKMARK [2][-]{subsection.4.3}{Finite Difference Method \205 Quantity of Interest Results}{section.4}% 55
+\BOOKMARK [3][-]{subsubsection.4.3.1}{2nd-Order Central Difference Scheme - Diffusion Equation}{subsection.4.3}% 56
+\BOOKMARK [3][-]{subsubsection.4.3.2}{4th-Order Central Difference Scheme - Diffusion Equation}{subsection.4.3}% 57
+\BOOKMARK [3][-]{subsubsection.4.3.3}{2nd-Order Central Difference Scheme - Harmonic Wave Equation}{subsection.4.3}% 58
+\BOOKMARK [3][-]{subsubsection.4.3.4}{4th-Order Central Difference Scheme - Harmonic Wave Equation}{subsection.4.3}% 59
+\BOOKMARK [3][-]{subsubsection.4.3.5}{2nd-Order Central Difference Scheme - Convection-Diffusion Equation}{subsection.4.3}% 60
+\BOOKMARK [3][-]{subsubsection.4.3.6}{4th-Order Central Difference Scheme - Convection-Diffusion Equation}{subsection.4.3}% 61
+\BOOKMARK [2][-]{subsection.4.4}{Finite Element Method \205 Quantity of Interest Results}{section.4}% 62
+\BOOKMARK [3][-]{subsubsection.4.4.1}{1st-Order \(p=1\) Galerkin Method - Diffusion Equation}{subsection.4.4}% 63
+\BOOKMARK [3][-]{subsubsection.4.4.2}{2nd-Order \(p=2\) Galerkin Method - Diffusion Equation}{subsection.4.4}% 64
+\BOOKMARK [3][-]{subsubsection.4.4.3}{1st-Order \(p=1\) Galerkin Method - Harmonic Wave Equation}{subsection.4.4}% 65
+\BOOKMARK [3][-]{subsubsection.4.4.4}{2nd-Order \(p=2\) Galerkin Method - Harmonic Wave Equation}{subsection.4.4}% 66
+\BOOKMARK [3][-]{subsubsection.4.4.5}{1st-Order \(p=1\) Galerkin Method - Convection-Diffusion Equation}{subsection.4.4}% 67
+\BOOKMARK [3][-]{subsubsection.4.4.6}{2nd-Order \(p=2\) Galerkin Method - Convection-Diffusion Equation}{subsection.4.4}% 68
+\BOOKMARK [1][-]{section.5}{Convergence Analysis}{Doc-Start}% 69
+\BOOKMARK [2][-]{subsection.5.1}{Rate of Convergence Derivation}{section.5}% 70
+\BOOKMARK [2][-]{subsection.5.2}{Rate of Convergence for the Diffusion Equation \205 Results}{section.5}% 71
+\BOOKMARK [3][-]{subsubsection.5.2.1}{2nd-Order Central Difference Scheme Finite Difference Method}{subsection.5.2}% 72
+\BOOKMARK [3][-]{subsubsection.5.2.2}{4th-Order Central Difference Scheme Finite Difference Method}{subsection.5.2}% 73
+\BOOKMARK [3][-]{subsubsection.5.2.3}{1st-Order \(p=1\) Galerkin Method Finite Element Method}{subsection.5.2}% 74
+\BOOKMARK [3][-]{subsubsection.5.2.4}{2nd-Order \(p=2\) Galerkin Method Finite Element Method}{subsection.5.2}% 75
+\BOOKMARK [2][-]{subsection.5.3}{Rate of Convergence for the Harmonic Wave Equation \205 Results}{section.5}% 76
+\BOOKMARK [3][-]{subsubsection.5.3.1}{2nd-Order Central Difference Scheme Finite Difference Method}{subsection.5.3}% 77
+\BOOKMARK [3][-]{subsubsection.5.3.2}{4th-Order Central Difference Scheme Finite Difference Method}{subsection.5.3}% 78
+\BOOKMARK [3][-]{subsubsection.5.3.3}{1st-Order \(p=1\) Galerkin Method Finite Element Method}{subsection.5.3}% 79
+\BOOKMARK [3][-]{subsubsection.5.3.4}{2nd-Order \(p=2\) Galerkin Method Finite Element Method}{subsection.5.3}% 80
+\BOOKMARK [2][-]{subsection.5.4}{Rate of Convergence for the Convection-Diffusion Equation \205 Results}{section.5}% 81
+\BOOKMARK [3][-]{subsubsection.5.4.1}{2nd-Order Central Difference Scheme Finite Difference Method}{subsection.5.4}% 82
+\BOOKMARK [3][-]{subsubsection.5.4.2}{4th-Order Central Difference Scheme Finite Difference Method}{subsection.5.4}% 83
+\BOOKMARK [3][-]{subsubsection.5.4.3}{1st-Order \(p=1\) Galerkin Method Finite Element Method}{subsection.5.4}% 84
+\BOOKMARK [3][-]{subsubsection.5.4.4}{2nd-Order \(p=2\) Galerkin Method Finite Element Method}{subsection.5.4}% 85
+\BOOKMARK [1][-]{section.6}{Discussion}{Doc-Start}% 86
+\BOOKMARK [1][-]{appendix.A}{u\(x\) v. uexact\(x\) Tables}{Doc-Start}% 87
+\BOOKMARK [1][-]{appendix.B}{MATLAB Code}{Doc-Start}% 88

@@ -1,0 +1,13 @@
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{$x$}&\textbf{$u(x)$}&\textbf{$\bar{u}(x)$}&\textbf{$\epsilon_{rel}$}\\\hline
+0.00e+00&0.00e+00&0.00e+00&NaN\\\hline
+1.25e-01&1.25e-01&1.25e-01&3.17e-04\\\hline
+2.50e-01&2.50e-01&2.50e-01&1.27e-03\\\hline
+3.75e-01&3.75e-01&3.75e-01&6.53e-03\\\hline
+5.00e-01&5.00e-01&5.00e-01&3.68e-02\\\hline
+6.25e-01&6.23e-01&6.24e-01&2.10e-01\\\hline
+7.50e-01&7.35e-01&7.43e-01&1.13e+00\\\hline
+8.75e-01&7.52e-01&7.93e-01&5.17e+00\\\hline
+1.00e+00&0.00e+00&0.00e+00&NaN\\\hline
+\end{tabular}

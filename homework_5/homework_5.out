@@ -1,0 +1,43 @@
+\BOOKMARK [0][-]{Doc-Start}{AERO 430 \205 Numerical Simulation \040Finite Difference Method for the Two-Dimensional Orthotropic Laplace Equation Boundary-Value Problem \040Ross B. Alexander}{}% 1
+\BOOKMARK [1][-]{section.1}{Orthotropic Diffusion Equation}{Doc-Start}% 2
+\BOOKMARK [1][-]{section.2}{Analytical Solutions}{Doc-Start}% 3
+\BOOKMARK [2][-]{subsection.2.1}{Analytical Solution of the Orthotropic Diffusion Equation}{section.2}% 4
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Proof of PDE Satisfaction}{subsection.2.1}% 5
+\BOOKMARK [3][-]{subsubsection.2.1.2}{Proof of Boundary Condition Satisfaction}{subsection.2.1}% 6
+\BOOKMARK [2][-]{subsection.2.2}{Analytical Solution of the Quantity of Interest for the Diffusion Equation}{section.2}% 7
+\BOOKMARK [1][-]{section.3}{Numerical Methods}{Doc-Start}% 8
+\BOOKMARK [2][-]{subsection.3.1}{2nd-Order Central Difference Scheme Finite Difference Method}{section.3}% 9
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Finite Difference Method}{subsection.3.1}% 10
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Discretized Differential Equation}{subsection.3.1}% 11
+\BOOKMARK [3][-]{subsubsection.3.1.3}{Discretized Extraction Formula}{subsection.3.1}% 12
+\BOOKMARK [2][-]{subsection.3.2}{4th-Order Central Difference Scheme Finite Difference Method}{section.3}% 13
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Finite Difference Method}{subsection.3.2}% 14
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Discretized Differential Equation}{subsection.3.2}% 15
+\BOOKMARK [3][-]{subsubsection.3.2.3}{Discretized Extraction Formula}{subsection.3.2}% 16
+\BOOKMARK [2][-]{subsection.3.3}{2nd-Order Lagrangian Interpolation}{section.3}% 17
+\BOOKMARK [2][-]{subsection.3.4}{4th-Order Lagrangian Interpolation}{section.3}% 18
+\BOOKMARK [1][-]{section.4}{Results}{Doc-Start}% 19
+\BOOKMARK [2][-]{subsection.4.1}{Finite Difference Method \205 Solution Results}{section.4}% 20
+\BOOKMARK [3][-]{subsubsection.4.1.1}{2nd-Order Central Difference Scheme}{subsection.4.1}% 21
+\BOOKMARK [3][-]{subsubsection.4.1.2}{4th-Order Central Difference Scheme}{subsection.4.1}% 22
+\BOOKMARK [2][-]{subsection.4.2}{Finite Difference Method \205 Quantity of Interest Results}{section.4}% 23
+\BOOKMARK [3][-]{subsubsection.4.2.1}{2nd-Order Central Difference Scheme}{subsection.4.2}% 24
+\BOOKMARK [3][-]{subsubsection.4.2.2}{4th-Order Central Difference Scheme}{subsection.4.2}% 25
+\BOOKMARK [1][-]{section.5}{Convergence Analysis}{Doc-Start}% 26
+\BOOKMARK [2][-]{subsection.5.1}{Rate of Convergence Derivation}{section.5}% 27
+\BOOKMARK [2][-]{subsection.5.2}{Rate of Convergence for the Orthotropic Diffusion Equation \205 Results}{section.5}% 28
+\BOOKMARK [3][-]{subsubsection.5.2.1}{2nd-Order Central Difference Scheme}{subsection.5.2}% 29
+\BOOKMARK [3][-]{subsubsection.5.2.2}{4th-Order Central Difference Scheme}{subsection.5.2}% 30
+\BOOKMARK [1][-]{section.6}{Discussion}{Doc-Start}% 31
+\BOOKMARK [1][-]{appendix.A}{u\(x\) v. uexact\(x\) Tables}{Doc-Start}% 32
+\BOOKMARK [1][-]{appendix.B}{MATLAB Code}{Doc-Start}% 33
+\BOOKMARK [2][-]{subsection.B.1}{homework\1375\137code\137order\1372.m}{appendix.B}% 34
+\BOOKMARK [2][-]{subsection.B.2}{homework\1375\137code\137order\1374.m}{appendix.B}% 35
+\BOOKMARK [2][-]{subsection.B.3}{assemble.m}{appendix.B}% 36
+\BOOKMARK [2][-]{subsection.B.4}{lagrange.m}{appendix.B}% 37
+\BOOKMARK [2][-]{subsection.B.5}{figContour.m}{appendix.B}% 38
+\BOOKMARK [2][-]{subsection.B.6}{figSurface.m}{appendix.B}% 39
+\BOOKMARK [2][-]{subsection.B.7}{figRoc.m}{appendix.B}% 40
+\BOOKMARK [2][-]{subsection.B.8}{figLag.m}{appendix.B}% 41
+\BOOKMARK [2][-]{subsection.B.9}{figAvg.m}{appendix.B}% 42
+\BOOKMARK [2][-]{subsection.B.10}{tableRender.m}{appendix.B}% 43

@@ -1,0 +1,30 @@
+\BOOKMARK [0][-]{Doc-Start}{AERO 430 \205 Numerical Simulation \040Second-Order Linear Ordinary Differential Equation Boundary-Value Problem \040Ross B. Alexander}{}% 1
+\BOOKMARK [1][-]{section.1}{Model Problem}{Doc-Start}% 2
+\BOOKMARK [1][-]{section.2}{Analytical Solution}{Doc-Start}% 3
+\BOOKMARK [2][-]{subsection.2.1}{Positive ODE}{section.2}% 4
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Homogeneous Solution}{subsection.2.1}% 5
+\BOOKMARK [3][-]{subsubsection.2.1.2}{Particular Solution}{subsection.2.1}% 6
+\BOOKMARK [3][-]{subsubsection.2.1.3}{Boundary Conditions}{subsection.2.1}% 7
+\BOOKMARK [3][-]{subsubsection.2.1.4}{Analytical Solution}{subsection.2.1}% 8
+\BOOKMARK [2][-]{subsection.2.2}{Negative ODE}{section.2}% 9
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Homogeneous Solution}{subsection.2.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Particular Solution}{subsection.2.2}% 11
+\BOOKMARK [3][-]{subsubsection.2.2.3}{Boundary Conditions}{subsection.2.2}% 12
+\BOOKMARK [3][-]{subsubsection.2.2.4}{Analytical Solution}{subsection.2.2}% 13
+\BOOKMARK [1][-]{section.3}{Numerical Methods}{Doc-Start}% 14
+\BOOKMARK [2][-]{subsection.3.1}{Second-Order Second-Derivative Finite Difference Method}{section.3}% 15
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Derivation}{subsection.3.1}% 16
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Results \205 Positive ODE}{subsection.3.1}% 17
+\BOOKMARK [3][-]{subsubsection.3.1.3}{Discussion \205 Positive ODE}{subsection.3.1}% 18
+\BOOKMARK [3][-]{subsubsection.3.1.4}{Results \205 Negative ODE}{subsection.3.1}% 19
+\BOOKMARK [3][-]{subsubsection.3.1.5}{Discussion \205 Negative ODE}{subsection.3.1}% 20
+\BOOKMARK [1][-]{section.4}{Convergence Analysis}{Doc-Start}% 21
+\BOOKMARK [2][-]{subsection.4.1}{First-Order First-Derivative Finite Difference Method}{section.4}% 22
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Derivation}{subsection.4.1}% 23
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Results}{subsection.4.1}% 24
+\BOOKMARK [3][-]{subsubsection.4.1.3}{Discussion}{subsection.4.1}% 25
+\BOOKMARK [2][-]{subsection.4.2}{Second-Order First-Derivative Finite Difference Method}{section.4}% 26
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Derivation}{subsection.4.2}% 27
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Results}{subsection.4.2}% 28
+\BOOKMARK [3][-]{subsubsection.4.2.3}{Discussion}{subsection.4.2}% 29
+\BOOKMARK [1][-]{section.5}{MATLAB Code}{Doc-Start}% 30

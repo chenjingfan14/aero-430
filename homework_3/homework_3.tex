@@ -1,0 +1,1192 @@
+\documentclass[10pt, reqno]{article}		% sets document class
+\usepackage[usenames,dvipsnames]{pstricks}
+\usepackage{epsfig}
+\usepackage{pst-grad} 				% enables gradients
+\usepackage{pst-plot} 				% enables axes
+\usepackage[space]{grffile} 		% enables spaces in paths
+\usepackage{etoolbox} 				% enables spaces in paths
+\makeatletter 						% enables spaces in paths
+\patchcmd\Gread@eps{\@inputcheck#1 }{\@inputcheck"#1"\relax}{}{}
+\makeatother
+\usepackage[margin=1.0in]{geometry}	% sets paper size
+\usepackage{amssymb}				% enables formulas
+\usepackage{amsmath}				% enables formulas
+\usepackage[utf8]{inputenc}			% enables diacritical input
+\usepackage{graphicx}				% enables graphics
+\graphicspath{ {images/} }			% sets graphics path
+\usepackage{chngcntr}				% enables counter
+\counterwithin{table}{subsection}	% enables table pre-labels
+\counterwithin{figure}{subsection}	% enables figure pre-labels
+\usepackage[labelsep=endash, labelfont=bf, font=bf]{caption}	% sets figure and caption separator
+%\usepackage{indentfirst}			% enables indent on first paragraphs
+\linespread{1.1}					% sets spacing to 1.5
+\setlength{\parskip}{0.5em}			% sets paragraph spacing to 1m
+%\usepackage{times}					% sets font to times new roman
+\usepackage{wrapfig}				% enables text wrapping around figures
+\usepackage{gensymb}				% enables symbols
+\usepackage{endnotes}				% enables endnotes
+\usepackage{afterpage}				% enables afterpage capability
+\setcounter{secnumdepth}{3}			% sets counter recognitions to sssection for label capability
+\numberwithin{equation}{section}
+\makeatletter						% set figure labels to center
+\g@addto@macro\@floatboxreset\centering
+\makeatother
+\usepackage{setspace}				% enables environments for spacing
+\usepackage{graphicx}				% allows table usage
+\usepackage{hyperref}				% enables hyperlinks
+\hypersetup{colorlinks=false, linkcolor=cyan, urlcolor=cyan, linktoc=page} % sets hyperlink colors
+\usepackage{accents}				% enables accents
+\usepackage{textcomp} 				% enables copyright
+\usepackage{tabto}					% enables tabbing
+\setlength\parindent{0pt}			% sets no indents
+\usepackage[framed]{mcode} 			% enables code boxes
+\usepackage{titlesec}				% enables title formatting
+\titleformat{\part}{\filcenter\huge\bfseries}{}{}{}
+\usepackage{float}
+
+\begin{document}
+
+\newcommand{\stoptocwriting}{%
+	\addtocontents{toc}{\protect\setcounter{tocdepth}{-5}}}
+\newcommand{\resumetocwriting}{%
+	\addtocontents{toc}{\protect\setcounter{tocdepth}{\arabic{tocdepth}}}}
+
+\stoptocwriting
+\part*{\underline{AERO 430 -- Numerical Simulation} \\ \Large Second-Order Linear Ordinary Differential Equation Boundary-Value Problem for 1-D Convection-Diffusion Equation \\ \large Ross B. Alexander}
+\resumetocwriting
+
+\vfill
+
+\begin{figure}[h]
+	\begin{center}
+	\includegraphics[width = 0.98\linewidth]{title_image}
+	\end{center}
+\end{figure}
+
+\vspace{80pt}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Model Problem}
+
+The model second-order linear ordinary differential equation boundary-value problem consists of:
+\begin{itemize}
+	\item the second-order linear ordinary differential equation:
+	\begin{equation}
+	- u''(x)+cu'(x)=0 \qquad x \in (0, 1)
+	\end{equation}
+	\item the boundary conditions:
+	\begin{equation}
+	u(0) = 0 \quad \textnormal{and} \quad u(1) = 1 
+	\end{equation}
+\end{itemize}
+The physical model of the second-order linear ordinary differential equation boundary-value problem is that of the concentration of a flow property that convects and diffuses proportional to the constant $c$. For example, the convection-diffusion equation could represent the concentration of ink as a function of distance in a quasi-one-dimensional flow.
+
+\newpage
+
+\section{Analytical Solution}
+
+\subsection{Analytical Solution to the Differential Equation}
+
+The following equation is the homogeneous second-order linear ordinary differential equation (ODE).
+\begin{equation}
+- u''(x)+cu'(x)=0
+\end{equation}
+The solution of the homogeneous ODE, $u_h(x)$ is assumed to be of the form: 
+\begin{equation}
+u_h(x) = e^{\lambda x}
+\end{equation}
+Taking the derivatives of $u_h(x)$, substituting them into the homogeneous ODE, and reducing the equation yields the \textbf{characteristic equation}.
+\begin{equation}
+u'_h(x) = \lambda e^{\lambda x}
+\end{equation}
+\begin{equation}
+u''_h(x) = \lambda^2 e^{\lambda x}
+\end{equation}
+\begin{equation}
+-\lambda^2 e^{\lambda x} + c \lambda e^{\lambda x} = 0
+\end{equation}
+\begin{equation}
+\mathbf{-\lambda^2 + c \lambda = \lambda(c-\lambda) = 0}
+\end{equation}
+Solving for $\lambda$ yields:
+\begin{equation}
+\lambda = \{0, c\}
+\end{equation}
+The homogenous solution $u_h(x)$ is then:
+\begin{equation}
+u_h(x) = ae^{0x} + be^{cx} 
+\end{equation}
+\begin{equation}
+\mathbf{u_h(x) = a + be^{cx}}
+\end{equation}
+Applying the both boundary conditions, $u(0) = 0$ and $u(1) = 1$, we get the system of algebraic equations, which yields $a$ and $b$:
+\begin{equation}
+u_h(0) = 0 = a + b
+\end{equation}
+\begin{equation}
+u_h(1) = 1 = a + be^c
+\end{equation}
+\begin{equation}
+	\begin{bmatrix}
+		1 & 1 \\ 1 & e^c
+	\end{bmatrix}
+	\begin{bmatrix}
+	a \\ b
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+	0 \\ 1
+	\end{bmatrix}
+\end{equation}
+\begin{equation}
+a = \frac{-1}{e^c-1} \quad \textnormal{and} \quad b = \frac{1}{e^c-1}
+\end{equation}
+Thus, it is shown that for the second-order linear ordinary differential equation with specified boundary conditions, that $u(x)$ is a solution to the differential equation on $x \in (0, 1)$.
+\begin{equation}
+-u''(x)+cu'(x)=0 \qquad x \in (0, 1)
+\end{equation}
+\begin{equation}
+u(0) = 0 \quad \textnormal{and} \quad u(1) = 1 
+\end{equation}
+\begin{equation}
+\mathbf{u(x) = \frac{e^{cx}-1}{e^c-1}}
+\end{equation}
+
+\newpage
+
+The values of $c$ tested in this study were $c \in {1, 2, 5, 10, 20, 50}$. A plot of the analytical solution for values of $c$ is depicted below:
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.8\linewidth]{analytical_solution}
+		\caption{Analytical Solution to the Differential Equation for Values of $c$}
+	\end{center}
+\end{figure}
+
+\newpage
+
+\subsection{Analytical Solution to the Quantity of Interest}
+
+The quantity of interest for this particular problem is the first derivative at the right boundary, or $u'(1)$. The differential equation and the analytical solution to the differential equation, respectively, are reproduced below.
+\begin{equation}
+- u''(x)+cu'(x)=0
+\end{equation}
+\begin{equation}
+u(x) = \frac{e^{cx}-1}{e^c-1}
+\end{equation}
+Thus, taking the first derivative, and solving at $x = 1$, we obtain the exact quantity of interest:
+\begin{equation}
+u'(x) = \frac{ce^{cx}}{e^c-1}
+\end{equation}
+\begin{equation}
+\mathbf{u'(1) = \frac{ce^{c}}{e^c-1}}
+\end{equation}
+It can be seen that if $e^c$, or rather $c$, is sufficiently large ($e^c \gg 1$), then the quantity of interest tends to $c$ given that the ratio of $e^c$ and $(e^c -1)$ tends to unity:
+\begin{equation}
+\lim_{c\to\infty} \frac{ce^{c}}{e^c-1} = \infty \approxeq c
+\end{equation}
+
+A table of the exact quantity of interest for the tested values of $c$ is included below (for $c=50$, error is less than machine epsilon, $\epsilon$):
+\begin{table}[H]
+	\caption{Analytical Solution to the Quantity of Interest for Values of $c$}
+\begin{tabular}{|c|c|}
+	\hline 
+	$\mathbf{c}$ & $\mathbf{u'(1)}$ \\ 
+	\hline 
+	1 & 1.58198 \\ 
+	\hline 
+	2 & 2.31304 \\ 
+	\hline 
+	5 & 5.03392 \\ 
+	\hline 
+	10 & 10.00045 \\ 
+	\hline 
+	20 & 20.00000004 \\ 
+	\hline 
+	50 & 50.00000000 \\ 
+	\hline 
+\end{tabular}
+\end{table} 
+
+\newpage
+
+\section{Numerical Methods}
+
+\subsection{Derivations}
+
+\subsubsection{2nd-Order Central Difference Scheme Finite Difference Method}
+
+\paragraph{First Derivative}
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Subtracting the Taylor series for $u_{i-1}$ from $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} - u_{i-1} = 2\Delta xu'_i + \frac{\Delta x^3}{3} u^{(3)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Solving for $u'_i$:
+\begin{equation}
+u'_i = \frac{u_{i+1} - u_{i-1}}{2 \Delta x} + \mathcal{O}(\Delta x^2) 
+\end{equation}
+
+From this specific first-derivative formulation using the finite difference method, the first-derivative approximation can be observed to be second-order ($\mathcal{O}(\Delta x^2)$).
+
+\paragraph{Second Derivative}
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Adding the Taylor series for $u_{i-1}$ and $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Rearranging terms to solve for $u''_i$:
+\begin{equation}
+u''_i = \frac{u_{i+1} - 2u_i + u_{i-1}}{\Delta x^2} + \mathcal{O}(\Delta x^2) 
+\end{equation}
+
+From this specific second-derivative formulation using the finite difference method, the second-derivative approximation can be observed to be second-order ($\mathcal{O}(\Delta x^2)$).
+
+\paragraph{Discretized Differential Equation}
+The differential equation is:
+\begin{equation}
+- u''(x)+cu'(x)=0
+\end{equation}
+Discretizing using the above formulas and simplifying yields:
+\begin{equation}
+-\left(\frac{u_{i+1} - 2u_i + u_{i-1}}{\Delta x^2}\right) + c\left(\frac{u_{i+1} - u_{i-1}}{2 \Delta x}\right) = 0
+\end{equation}
+\begin{equation}
+-\left(u_{i+1} - 2u_i + u_{i-1}\right) + c\Delta x\left( \frac{u_{i+1} - u_{i-1}}{2}\right) = 0
+\end{equation}
+\begin{equation}
+\left(-1-\frac{c\Delta x}{2}\right)u_{i-1} + \left(2\right)u_{i} + \left(-1+\frac{c\Delta x}{2}\right)u_{i+1} = 0
+\end{equation}
+
+\subsubsection{4th-Order Central Difference Scheme Finite Difference Method}
+
+\paragraph{First Derivative}
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Subtracting the Taylor series for $u_{i-1}$ from $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} - u_{i-1} = 2\Delta xu'_i + \frac{\Delta x^3}{3} u^{(3)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Returning to the differential equation and taking one additional derivative:
+\begin{equation}
+u''(x)=cu'(x)
+\end{equation}
+\begin{equation}
+u^{(3)}(x)=cu''(x)
+\end{equation}
+Replacing the second-derivative term with the original differential equation:
+\begin{equation}
+u^{(3)}(x) = c^2u'(x)
+\end{equation}
+Now replacing the third-derivative term in the Taylor series subtraction and then dividing by $2\Delta x$:
+\begin{equation}
+u_{i+1} - u_{i-1} = 2\Delta xu'_i + \frac{c^2\Delta x^3}{3}u'_i  + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+\frac{u_{i+1} - u_{i-1}}{2\Delta x} = \left(1 + \frac{c^2\Delta x^2}{6}\right)u'_i  + \mathcal{O}(\Delta x^4)
+\end{equation}
+Solving for $u'_i$:
+\begin{equation}
+u'_i = \left(1 + \frac{c^2\Delta x^2}{6}\right)^{-1} \frac{u_{i+1} - u_{i-1}}{2\Delta x} + \mathcal{O}(\Delta x^4)
+\end{equation}
+
+From this specific first-derivative formulation using the finite difference method, the first-derivative approximation can be observed to be fourth-order ($\mathcal{O}(\Delta x^4)$).
+
+\paragraph{Second Derivative}
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Adding the Taylor series for $u_{i-1}$ and $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \frac{\Delta x^4}{12} u^{(4)}_i + \mathcal{O}(\Delta x^6)
+\end{equation}
+Returning to the differential equation and taking two additional derivatives:
+\begin{equation}
+u''(x)=cu'(x)
+\end{equation}
+\begin{equation}
+u^{(3)}(x)=cu''(x)
+\end{equation}
+\begin{equation}
+u^{(4)}(x)=cu^{(3)}(x)
+\end{equation}
+Replacing the fourth-derivative and third-derivative terms with the original differential equation, we arrive at:
+\begin{equation}
+u^{(4)}(x) = c^2u''(x)
+\end{equation}
+Now replacing the fourth-derivative term in the Taylor series addition, rearranging, and dividing by $\Delta x^2$:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \frac{c^2\Delta x^4}{12} u''_i + \mathcal{O}(\Delta x^6)
+\end{equation}
+\begin{equation}
+\frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} =  \left(1 + \frac{c^2\Delta x^2}{12} \right)u''_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Rearranging terms to solve for $u''_i$:
+\begin{equation}
+u''_i = \left(1 + \frac{c^2\Delta x^2}{12} \right)^{-1} \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} + \mathcal{O}(\Delta x^4)
+\end{equation}
+
+From this specific second-derivative formulation using the finite difference method, the second-derivative approximation can be observed to be fourth-order ($\mathcal{O}(\Delta x^4)$).
+
+\paragraph{Discretized Differential Equation}
+The differential equation is:
+\begin{equation}
+- u''(x)+cu'(x)=0
+\end{equation}
+Discretizing using the above formulas and simplifying yields:
+\begin{equation}
+-\left(1 + \frac{c^2\Delta x^2}{12} \right)^{-1} \frac{u_{i+1} -2u_i + u_{i-1}}{\Delta x^2} + c\left(1 + \frac{c^2\Delta x^2}{6}\right)^{-1} \frac{u_{i+1} - u_{i-1}}{2\Delta x} = 0
+\end{equation}
+\begin{equation}
+\left(-1-\frac{c\Delta x}{2}-\frac{c^2\Delta x^2}{12}\right)u_{i-1} + \left(2+\frac{c^2\Delta x^2}{6}\right)u_{i} + \left(-1+\frac{c\Delta x}{2}-\frac{c^2\Delta x^2}{12}\right)u_{i+1} = 0
+\end{equation}
+
+\subsubsection{1st-Order Upwind Scheme Finite Difference Method}
+
+\paragraph{First Derivative}
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i-1$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Rearranging the Taylor series for $u'_i$:
+\begin{equation}
+u'_i = \frac{u_i - u_{i-1}}{\Delta x}  + \mathcal{O}(\Delta x)
+\end{equation}
+
+From this specific first-derivative formulation using the finite difference method, the first-derivative approximation can be observed to be first-order ($\mathcal{O}(\Delta x)$).
+
+\paragraph{Second Derivative}
+Developing the Taylor series for $u(x)$ in the vicinity of $x = i$:
+\begin{equation}
+u_{i-1} = u_i - \Delta x u'_i + \frac{\Delta x^2}{2} u''_i - \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+u_{i+1} = u_i + \Delta x u'_i + \frac{\Delta x^2}{2} u''_i + \frac{\Delta x^3}{6} u^{(3)}_i + \frac{\Delta x^4}{24} u^{(4)}_i + \mathcal{O}(\Delta x^5)
+\end{equation}
+Adding the Taylor series for $u_{i-1}$ and $u_{i+1}$ and canceling terms:
+\begin{equation}
+u_{i+1} + u_{i-1} = 2u_i + \Delta x^2 u''_i + \mathcal{O}(\Delta x^4)
+\end{equation}
+Rearranging terms to solve for $u''_i$:
+\begin{equation}
+u''_i = \frac{u_{i+1} - 2u_i + u_{i-1}}{\Delta x^2} + \mathcal{O}(\Delta x^2) 
+\end{equation}
+
+From this specific second-derivative formulation using the finite difference method, the second-derivative approximation can be observed to be second-order ($\mathcal{O}(\Delta x^2)$).
+
+\paragraph{Discretized Differential Equation}
+The differential equation is:
+\begin{equation}
+- u''(x)+cu'(x)=0
+\end{equation}
+Discretizing using the above formulas and simplifying yields:
+\begin{equation}
+-\left(\frac{u_{i+1} - 2u_i + u_{i-1}}{\Delta x^2}\right) + c\left(\frac{u_i - u_{i-1}}{\Delta x}\right) = 0
+\end{equation}
+\begin{equation}
+-\left(u_{i+1} - 2u_i + u_{i-1}\right) + c\Delta x\left(u_i - u_{i-1}\right) = 0
+\end{equation}
+\begin{equation}
+\left(-1-c\Delta x\right)u_{i-1} + \left(2+c\Delta x\right)u_{i} + \left(-1\right)u_{i+1} = 0
+\end{equation}
+
+\newpage
+
+\subsection{Finite Difference Method Results}
+
+\subsubsection{2nd-Order Central Difference Scheme Finite Difference Method}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_2nd_order_cds_c_1}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_2nd_order_cds_c_1}
+		\caption{2nd-Order CDS FDM and Pointwise Error for $c = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_2nd_order_cds_c_2}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_2nd_order_cds_c_2}
+		\caption{2nd-Order CDS FDM and Pointwise Error for $c = 2$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.11\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_2nd_order_cds_c_5}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_2nd_order_cds_c_5}
+		\caption{2nd-Order CDS FDM and Pointwise Error for $c = 5$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_2nd_order_cds_c_10}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_2nd_order_cds_c_10}
+		\caption{2nd-Order CDS FDM and Pointwise Error for $c = 10$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_2nd_order_cds_c_20}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_2nd_order_cds_c_20}
+		\caption{2nd-Order CDS FDM and Pointwise Error for $c = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_2nd_order_cds_c_50}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_2nd_order_cds_c_50}
+		\caption{2nd-Order CDS FDM and Pointwise Error for $c = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsubsection{4th-Order Central Difference Scheme Finite Difference Method}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_4th_order_cds_c_1}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_4th_order_cds_c_1}
+		\caption{4th-Order CDS FDM and Pointwise Error for $c = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_4th_order_cds_c_2}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_4th_order_cds_c_2}
+		\caption{4th-Order CDS FDM and Pointwise Error for $c = 2$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.17\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_4th_order_cds_c_5}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_4th_order_cds_c_5}
+		\caption{4th-Order CDS FDM and Pointwise Error for $c = 5$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_4th_order_cds_c_10}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_4th_order_cds_c_10}
+		\caption{4th-Order CDS FDM and Pointwise Error for $c = 10$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_4th_order_cds_c_20}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_4th_order_cds_c_20}
+		\caption{4th-Order CDS FDM and Pointwise Error for $c = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_4th_order_cds_c_50}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_4th_order_cds_c_50}
+		\caption{4th-Order CDS FDM and Pointwise Error for $c = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\subsubsection{1st-Order Upwind Scheme Finite Difference Method}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_1st_order_us_c_1}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_1st_order_us_c_1}
+		\caption{1st-Order US FDM and Pointwise Error for $c = 1$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_1st_order_us_c_2}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_1st_order_us_c_2}
+		\caption{1st-Order US FDM and Pointwise Error for $c = 2$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.17\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_1st_order_us_c_5}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_1st_order_us_c_5}
+		\caption{1st-Order US FDM and Pointwise Error for $c = 5$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_1st_order_us_c_10}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_1st_order_us_c_10}
+		\caption{1st-Order US FDM and Pointwise Error for $c = 10$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_1st_order_us_c_20}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_1st_order_us_c_20}
+		\caption{1st-Order US FDM and Pointwise Error for $c = 20$}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.49\linewidth]{solution_1st_order_us_c_50}
+		\includegraphics[width = 0.49\linewidth]{pointwise_error_1st_order_us_c_50}
+		\caption{1st-Order US FDM and Pointwise Error for $c = 50$}
+	\end{center}
+\end{figure}
+
+\begin{center}
+	\includegraphics[height = 0.25\linewidth]{legend}
+\end{center}
+
+\newpage
+
+\subsection{Quantity of Interest Results}
+
+\subsubsection{2nd-Order Central Difference Scheme Finite Difference Method}
+
+\begin{table}[H]
+	\caption{Quantity of Interest Values for 2nd-Order CDS FDM - I}	
+	\input{qoi_1_table_2nd_order_cds.tex}
+\end{table}
+
+\newpage
+
+\begin{table}[H]
+	\caption{Quantity of Interest Values for 2nd-Order CDS FDM - II}	
+	\input{qoi_2_table_2nd_order_cds.tex}
+\end{table}
+
+\newpage
+
+\subsubsection{4th-Order Central Difference Scheme Finite Difference Method}
+
+\begin{table}[H]
+	\caption{Quantity of Interest Values for 4th-Order CDS FDM - I}
+	\input{qoi_1_table_4th_order_cds.tex}	
+\end{table}
+
+\newpage
+
+\begin{table}[H]
+	\caption{Quantity of Interest Values for 4th-Order CDS FDM - II}
+	\input{qoi_2_table_4th_order_cds.tex}	
+\end{table}
+
+\newpage
+
+\subsubsection{1st-Order Upwind Scheme Finite Difference Method}
+
+\begin{table}[H]
+	\caption{Quantity of Interest Values for 1st-Order US FDM - I}
+	\input{qoi_1_table_1st_order_us.tex}	
+\end{table}
+
+\newpage
+
+\begin{table}[H]
+	\caption{Quantity of Interest Values for 1st-Order US FDM - II}	
+	\input{qoi_2_table_1st_order_us.tex}
+\end{table}
+
+\newpage
+
+\subsection{Discussion}
+
+Meshes were calculated for $\Delta x = 0.5^{22}$, but only meshes up to $\Delta x = 0.5^8$ are shown in the tables and figures due to sheer size and readability.
+
+\vspace{20 pt}
+
+For the 2nd-order CDS FDM and the 4th-order CDS FDM, the pointwise relative error in $u(x)$ is generally not a great measure for the accuracy of the method, as the solution is close to zero, thus amplifying the relative differences. 
+
+The 2nd-order CDS FDM is unstable for coarse mesh sizes, but more dependent on the Peclet condition, which relates the mesh spacing to the convective-diffusive constant $c$. These instabilities arise for $c = 2$ and $\Delta x = 1/2$, but includes even smaller mesh spacings at higher values of $c$. These spurious oscillations are nonphysical, which means that the 2nd-order method should only be used if the Peclet condition is satisfied, which guarantees stability. 
+
+The 4th-order CDS FDM is not unstable for coarse mesh sizes, but error grows siginificantly for higher values of $c$ and coarser mesh spacings. These inaccuracies can be seen when considering the variation in the solution using mesh spacing $\Delta x = 1/2$ for all values of $c$. These errors are more acceptable over the errors from the 2nd-order CDS FDM, which means that the 4th-order method can be used even if the Peclet condition is not satisfied. In general the solution developed from the 4th-order method is much more accurate than the second-order method on refined meshes. 
+
+The 1st-order US FDM is not unstable for any mesh size, since the upwind scheme is a physical model that prevents spurious oscillations from being produced. For even the coarsest mesh, the scheme is stable. In general though, the method is not very accurate, which is a significant reason to investigate using higher-order upwind schemes (i.e. a second-order quadratic upwind scheme) or higher-order central difference schemes despite their constraints on stability. 
+
+Additionally, we can see that for the quantity of interest, the second-order CDS FDM produces increasingly accurate values of the first derivative at 1, though the beginnings of error propagation are seen at the smallest meshes tested. The fourth-order CDS FDM produces increasingly accurate values of the first derivative at 1, but error propagation is seen in the smallest meshes tested in greater amounts than the second-order method. For the first-order US FDM, accurate values of the first derivative are produced, but require a much more refined mesh to produce similar values for the relative error.
+
+\vspace{30pt}
+
+\textit{Ultimately, the selection between 2nd-order CDS FDM, 4th-order CDS FDM, and 1st-order US FDM is a trade-off between stability, computational speed, and mesh size, respectively.}
+
+\newpage
+
+\section{Convergence Analysis}
+
+\subsection{Rate of Convergence Derivation}
+
+Let the error for a particular mesh size $\Delta x$ be $E\left(\Delta x\right)$:
+\begin{equation}
+E\left(\Delta x\right) = C\left(\Delta x\right)^\beta
+\end{equation}
+Then for a smaller mesh size $\frac{\Delta x}{2}$ we have:
+\begin{equation}
+E\left(\frac{\Delta x}{2}\right) = C\left(\frac{\Delta x}{2}\right)^\beta
+\end{equation}
+Dividing the error at each mesh size and taking the logarithm:
+\begin{equation}
+\frac{E\left(\Delta x\right)}{E\left(\frac{\Delta x}{2}\right)} = \frac{C\left(\Delta x\right)^\beta}{C\left(\frac{\Delta x}{2}\right)^\beta} = 2^\beta
+\end{equation}
+\begin{equation}
+\log\left[\frac{E\left(\Delta x\right)}{E\left(\frac{\Delta x}{2}\right)}\right] = \log(2^\beta)
+\end{equation}
+\begin{equation}
+\log\left[\frac{E\left(\Delta x\right)}{E\left(\frac{\Delta x}{2}\right)}\right] = \beta \log(2)
+\end{equation}
+Rearranging for $\beta$ and simplifying:
+\begin{equation}
+\beta = \frac{1}{\log(2)} \left[\log\left(E\left(\Delta x\right)\right) - \log\left(E\left(\frac{\Delta x}{2}\right)\right)\right] 
+\end{equation}
+Denoting $E^*_{\Delta x} = \log\left(E\left(\Delta x\right)\right)$:
+\begin{equation}
+\mathbf{\beta = \frac{E^*_{\Delta x} - E^*_{\frac{\Delta x}{2}}}{\log (2)}}
+\end{equation}
+
+\newpage
+
+\subsection{2nd-Order Central Difference Scheme First-Derivative Extraction}
+
+\subsubsection{Derivation}
+
+Developing the Taylor series for $u(x)$ in the vicinity of $x = 1$:
+\begin{equation}
+u_{N-1} = u_N - \Delta x u'_N + \frac{\Delta x^2}{2} u''_N + \mathcal{O}(\Delta x^3)
+\end{equation}
+Returning to the differential equation and rearranging for the second derivative:
+\begin{equation}
+-u''(x)+cu'(x)=0
+\end{equation}
+\begin{equation}
+u''(x)=cu'(x)
+\end{equation}
+Substituing the expression for the second-derivative in the Taylor series expansion and rearranging:
+\begin{equation}
+u_{N-1} = u_N - \Delta x u'_N + \frac{c\Delta x^2}{2} u'_N + \mathcal{O}(\Delta x^3)
+\end{equation} 
+\begin{equation}
+u_{N-1} = u_N +\left(-\Delta x +\frac{c\Delta x^2}{2}\right) u'_N + \mathcal{O}(\Delta x^3)
+\end{equation} 
+\begin{equation}
+u'_N = \left(1 - \frac{c\Delta x}{2}\right)^{-1} \left(\frac{u_{N}-u_{N-1}}{\Delta x}\right) + \mathcal{O}(\Delta x^2)
+\end{equation}
+Applying the boundary condition $u(1) = u_N = 1$:
+\begin{equation}
+u'_N = \left(1 - \frac{c\Delta x}{2}\right)^{-1} \left(\frac{1-u_{N-1}}{\Delta x}\right) + \mathcal{O}(\Delta x^2)
+\end{equation}
+
+From this specific first-derivative formulation at the boundary $x = 1$ using the finite difference method, the approximation can be observed to be second-order ($\mathcal{O}(\Delta x^2)$).
+
+\newpage
+
+\subsubsection{Results}
+
+Note: The quantity of interest for the 2nd-order CDS FDM is extracted using the 2nd-order first-derivative extraction - yielding the quantity of interest with an error of $\mathcal{O}(\Delta x^2)$.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.57\linewidth]{convergence_2nd_order_cds}
+		\caption{Convergence Plot for 2nd-Order CDS FDM}	
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\input{roc_table_2nd_order_cds.tex}
+	\caption{Rate of Convergence Values for 2nd-Order CDS FDM}	
+\end{table}
+
+\newpage
+
+\subsection{4th-Order Central Difference Scheme First-Derivative Extraction}
+
+\subsubsection{Derivation}
+
+Developing the Taylor series for $u(x)$ in the vicinity of $x = 1$:
+\begin{equation}
+u_{N-1} = u_N - \Delta x u'_N + \frac{\Delta x^2}{2} u''_N - \frac{\Delta x^3}{6} u^{(3)}_N + \frac{\Delta x^4}{24} u^{(4)}_N + \mathcal{O}(\Delta x^5)
+\end{equation}
+Returning to the differential equation, rearranging for the second derivative, and taking two additional derivatives:
+\begin{equation}
+-u''(x)+cu'(x)=0
+\end{equation}
+\begin{equation}
+u''(x)=cu'(x)
+\end{equation}
+\begin{equation}
+u^{(3)}(x)=c^2u'(x)
+\end{equation}
+\begin{equation}
+u^{(4)}(x)=c^3u'(x)
+\end{equation}
+Replacing the second-, third-, and fourth-derivative terms in the Taylor series expansion: 
+\begin{equation}
+u_{N-1} = u_N - \Delta x u'_N + \frac{c\Delta x^2}{2} u'_N - \frac{c^2\Delta x^3}{6} u'_N + \frac{c^3\Delta x^4}{24} u'_N + \mathcal{O}(\Delta x^5)
+\end{equation}
+\begin{equation}
+\frac{u_{N}-u_{N-1}}{\Delta x} = \left(1 - \frac{c\Delta x}{2} + \frac{c^2\Delta x^2}{6} - \frac{c^3\Delta x^3}{24} \right)u'_N + \mathcal{O}(\Delta x^4)
+\end{equation}
+\begin{equation}
+u'_N = \left(1 - \frac{c\Delta x}{2} + \frac{c^2\Delta x^2}{6} - \frac{c^3\Delta x^3}{24} \right)^{-1}\frac{u_{N}-u_{N-1}}{\Delta x} + \mathcal{O}(\Delta x^4)
+\end{equation}
+Applying the boundary condition $u(1) = u_N = 1$:
+\begin{equation}
+u'_N = \left(1 - \frac{c\Delta x}{2} + \frac{c^2\Delta x^2}{6} - \frac{c^3\Delta x^3}{24} \right)^{-1}\frac{1-u_{N-1}}{\Delta x} + \mathcal{O}(\Delta x^4)
+\end{equation}
+
+From this specific first-derivative formulation at the boundary $x = 1$ using the finite difference method, the approximation can be observed to be fourth-order ($\mathcal{O}(\Delta x^4)$).
+
+\newpage
+
+\subsubsection{Results}
+
+Note: The quantity of interest for the 4th-order CDS FDM is extracted using the 4th-order first-derivative extraction - yielding the quantity of interest with an error of $\mathcal{O}(\Delta x^4)$.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.57\linewidth]{convergence_4th_order_cds}
+		\caption{Convergence Plot for 4th-Order CDS FDM}	
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\input{roc_table_4th_order_cds.tex}
+	\caption{Rate of Convergence Values for 4th-Order CDS FDM}	
+\end{table}
+
+\newpage
+
+\subsection{1st-Order Upwind Scheme First-Derivative Extraction}
+
+\subsubsection{Derivation}
+
+Developing the Taylor series for $u(x)$ in the vicinity of $x = 1$:
+\begin{equation}
+u_{N-1} = u_N - \Delta x u'_N + \mathcal{O}(\Delta x^2)
+\end{equation}
+Rearranging terms to solve for $u'_N$:
+\begin{equation}
+u'_N = \frac{u_N - u_{N-1}}{\Delta x} + \mathcal{O}(\Delta x)
+\end{equation}
+Applying the boundary condition $u(1) = u_N = 1$:
+\begin{equation}
+u'_N = \frac{1 - u_{N-1}}{\Delta x} + \mathcal{O}(\Delta x)
+\end{equation}
+
+From this specific first-derivative formulation at the boundary $x = 1$ using the finite difference method, the approximation can be observed to be first-order ($\mathcal{O}(\Delta x)$).
+
+\newpage
+
+\subsubsection{Results}
+
+Note: The quantity of interest for the 1st-order US FDM is extracted using the 1st-order first-derivative extraction - yielding the quantity of interest with an error of $\mathcal{O}(\Delta x)$.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width = 0.56\linewidth]{convergence_1st_order_us}
+		\caption{Convergence Plot 1st-Order US FDM}	
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\input{roc_table_1st_order_us.tex}
+	\caption{Rate of Convergence Values for 1st-Order US FDM}	
+\end{table}
+
+\subsection{Comparison of 2nd-Order CDS, 4th-Order CDS, and 1st-Order US Finite Difference Methods}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.46\linewidth]{convergence_c_1}
+		\includegraphics[width=0.46\linewidth]{convergence_c_2}
+		\includegraphics[width=0.46\linewidth]{convergence_c_5}
+		\includegraphics[width=0.46\linewidth]{convergence_c_10}
+		\includegraphics[width=0.46\linewidth]{convergence_c_20}
+		\includegraphics[width=0.46\linewidth]{convergence_c_50}
+	\end{center}
+\end{figure}
+
+\subsection{Discussion}
+
+As was explored earlier, the composite order of the solution to the boundary-value problem is dependent on the lowest-order method used across the entire solution -- in this case, the lowest-order method of the finite difference method and the extraction method. Thus, the extraction method was developed to be equal to the highest-order method used, so that the rates of convergence could be easily seen.
+
+For the 2nd-order CDS FDM, the rate of convergence is shown to be approximately 2 (\textbf{quadratic convergence}), which is predicted by order of the error calculations. At small mesh sizes, the error begins to increase as a function of increasing mesh size -- typical of such small mesh sizes. We can see that a number of simulations, for example, those at $c=50$ at the coarsest mesh sizes actually have more than 100\% relative error. This is due to the violation of the Peclet condition and earlier described unstable oscillations that develop in the scheme. These oscillations and their errors disappear once the mesh size is sufficiently small that the Peclet condition is satified.
+
+For the 4th-order CDS FDM, the rate of convergence is shown to be approximately 4 and sometimes a little more than 4 (\textbf{quartic to superquartic convergence}), which is predicted by order of the error calculations. At moderately small mesh sizes, the error begins to increase as a function of increasing mesh size -- typical of such small mesh sizes. However, compared to the 2nd-order CDS FDM, the onset of the error increase is much earlier - this is because of the increased accuracy provided earlier on for coarser meshes. We also observe some odd trends for the case $c=50$.
+
+For the 1st-order US FDM, the rate of convergence is shown to be approximately 1 and sometimes a little less than 1 (\textbf{sublinear to linear convergence}), which is predicted by order of the error calculations. Even at very small mesh sizes, the error never increases as a function of increasing mesh size -- though at the smallest mesh size tested, there appears to be the development of the trend reversal, as seen for other methods.
+
+\vspace{30 pt}
+
+A simultaneous comparison of all of the methods for various values of $c$ proves that:
+
+\begin{itemize}
+	\item the second-order central difference scheme finite difference method is quadratically convergent
+	\item the fourth-order central difference scheme finite difference method is quartically convergent
+	\item the first-order upwind scheme finite difference method is linearly convergent
+\end{itemize}
+
+\newpage
+
+\appendix
+
+\section{$u(x)$ v. $u_{exact}(x)$ Tables}
+
+Error tables are included here up to a mesh spacing of $\Delta x = \left(\frac{1}{2}\right)^5$, but are available for all mesh spacings through the MATLAB code.
+
+\subsection{2nd-Order CDS FDM}
+
+\input{pointwise_error_table_dx_3_2nd_order_cds}
+\input{pointwise_error_table_dx_5_2nd_order_cds}
+\newline
+\input{pointwise_error_table_dx_9_2nd_order_cds}
+\input{pointwise_error_table_dx_17_2nd_order_cds}
+\newline
+\input{pointwise_error_table_dx_33_2nd_order_cds}
+
+\newpage
+
+\subsection{4th-Order CDS FDM}
+
+\input{pointwise_error_table_dx_3_4th_order_cds}
+\input{pointwise_error_table_dx_5_4th_order_cds}
+\newline
+\input{pointwise_error_table_dx_9_4th_order_cds}
+\input{pointwise_error_table_dx_17_4th_order_cds}
+\newline
+\input{pointwise_error_table_dx_33_4th_order_cds}
+
+\newpage
+
+\subsection{1st-Order US FDM}
+
+\input{pointwise_error_table_dx_3_1st_order_us}
+\input{pointwise_error_table_dx_5_1st_order_us}
+\newline
+\input{pointwise_error_table_dx_9_1st_order_us}
+\input{pointwise_error_table_dx_17_1st_order_us}
+\newline
+\input{pointwise_error_table_dx_33_1st_order_us}
+
+\newpage
+
+\section{MATLAB Code}
+
+\begin{lstlisting}
+clear all; close all; clc
+
+%% Initial Conditions
+
+plotGen     = false;
+plotSave    = false;
+tableSave   = false;
+tableSave2  = false;
+tableSave3  = false;
+
+odeType = '1st Order US';
+%odeType = '2nd Order CDS';
+%odeType = '4th Order CDS';
+
+odeString = '1st_Order_US';
+
+mesh.order = 1:22;
+mesh.dx = 0.5.^mesh.order;
+
+rowID = 0;
+
+%% Boundary Value Problem Solution
+
+for c = [50]
+
+	rowID = rowID + 1;
+	colID = 0;
+
+	if plotGen
+
+		fig1 = figure(1);
+		xlabel('x');    ylabel('u(x)');
+		grid on;        grid minor;
+		box on;         hold on;
+		set(gcf, 'Position', [1 1 624 550])
+
+		if strcmpi(odeType, '2nd Order CDS')
+			titleString = strcat('2nd Order CDS FDM for c=', num2str(c));
+		elseif strcmpi(odeType, '4th Order CDS')
+			titleString = strcat('4th Order CDS FDM for c=', num2str(c));
+		elseif strcmpi(odeType, '1st Order US')
+			titleString = strcat('1st Order US FDM for c=', num2str(c));
+		end
+	
+		title(titleString)
+		
+		fig2 = figure(2);
+		xlabel('x');    ylabel('\epsilon_{rel}');
+		grid on;        grid minor;
+		box on;         hold on;
+		set(gcf, 'Position', [1 1 624 550])
+		
+		title(titleString)
+	
+	end
+
+	for dx = mesh.dx
+	
+		nx = 1 / dx + 1;
+		x = linspace(0, 1, nx);
+		b = zeros(nx, 1);
+		colID = colID + 1;
+	
+		if strcmpi(odeType, '2nd Order CDS')
+			alpha = -1 - c*dx/2;
+			beta = 2;
+			gamma = -1 + c*dx/2;
+		elseif strcmpi(odeType, '4th Order CDS')
+			alpha = -1 - c*dx/2 - c^2*dx^2/12;
+			beta = 2 + c^2*dx^2/6;
+			gamma = -1 + c*dx/2 - c^2*dx^2/12;
+		elseif strcmpi(odeType, '1st Order US')
+			alpha = -1 - c*dx;
+			beta = 2 + c*dx;
+			gamma = -1;
+		end
+	
+		A = gallery('tridiag', nx, alpha, beta, gamma);
+		
+		A(1, 1) = 1;    A(1, 2) = 0;        b(1) = 0;
+		A(nx, nx) = 1;  A(nx, nx-1) = 0;    b(nx) = 1;
+		b(2:nx-1) = 0;
+		
+		u = A\b;
+	
+		if plotGen && dx >= mesh.dx(8)
+		
+			figure(1)
+			plot(x, u, 'linewidth', 1)
+		
+		end
+	
+		if strcmpi(odeType, '2nd Order CDS')
+			dudx.fdm(rowID, colID) = (1 -c*dx/2)^-1 * (1 - u(end-1)) / dx;
+		elseif strcmpi(odeType, '4th Order CDS')
+			dudx.fdm(rowID, colID) = (1 -c*dx/2 + c^2*dx^2/6 - c^3*dx^3/24)^-1 * ...
+			(1 - u(end-1)) / dx;
+		elseif strcmpi(odeType, '1st Order US')
+			dudx.fdm(rowID, colID) = (1 - u(end-1)) / dx;
+		end
+	
+		ux.exact = (exp(c*x) - 1) / (exp(c) - 1);
+		dudx.exact(rowID, colID) = c*exp(c) / (exp(c) - 1);
+	
+		if plotGen && dx >= mesh.dx(8)
+		
+			figure(2)
+			plot(x(2:end-1), abs(ux.exact(2:end-1)'-u(2:end-1)) ./ ...
+			abs(ux.exact(2:end-1)')*100, 'o-')
+		
+		end
+	
+		if tableSave2 && dx >= mesh.dx(5)
+		
+			colLabels = {'$x$', '$u(x)$', '$\bar{u}(x)$', '$\epsilon_{rel}$'};
+		
+			matrix2latex([x' u ux.exact' (abs(ux.exact'-u)./abs(ux.exact')*100)], ...
+			strcat('pointwise_error_table_dx_', num2str(nx), '_', lower(odeString), '.tex'), ...
+			'columnLabels', colLabels, 'alignment', 'c', 'format', '%1.2e')
+		
+		end
+	
+	end
+
+	if plotGen
+	
+		figure(1)
+		
+		fplot(@(x) (exp(c*x)-1)/(exp(c) - 1), [0 1], '-k', 'linewidth', 1.5)
+		
+		legend('\Deltax = (1/2)^1', '\Deltax = (1/2)^2', '\Deltax = (1/2)^3', ...
+		'\Deltax = (1/2)^4', '\Deltax = (1/2)^5', '\Deltax = (1/2)^6', ...
+		'\Deltax = (1/2)^7', '\Deltax = (1/2)^8', 'Analytical Solution', ...
+		'location', 'eastoutside')
+	
+		drawnow
+		
+		figure(2)
+		
+		legend('\Deltax = (1/2)^1', '\Deltax = (1/2)^2', '\Deltax = (1/2)^3', ...
+		'\Deltax = (1/2)^4', '\Deltax = (1/2)^5', '\Deltax = (1/2)^6', ...
+		'\Deltax = (1/2)^7', '\Deltax = (1/2)^8', 'location', 'eastoutside')
+		set(gca, 'YScale', 'log')
+		
+		drawnow
+	
+		if plotSave
+		
+			figure(1)
+			figureString = strcat('solution_', lower(odeString), '_c_', num2str(c));
+			saveas(gcf, figureString, 'epsc')
+			
+			figure(2)
+			figureString = strcat('pointwise_error_', lower(odeString), '_c_', num2str(c));
+			saveas(gcf, figureString, 'epsc')
+			
+			close gcf;  close gcf
+		
+		end
+	
+	end
+
+end
+
+
+%% Convergence Analysis
+
+relError = abs(dudx.exact-dudx.fdm) ./ abs(dudx.exact) * 100;
+
+if plotGen
+
+	figure
+	xlabel('-log_{10}(\Deltax)');   ylabel('log_{10}(\epsilon_{rel})');
+	grid on;                        grid minor;
+	box on;                         hold on;
+	
+	for kID = 1:6
+		loglog(-mesh.dx, relError(kID, :), '-o', 'linewidth', 1.25);
+	end
+	
+	title(strcat('Convergence Plot for the ', odeType))
+	legend('c=1', 'c=2', 'c=5', 'c=10', 'c=20', 'c=50')
+	set(gca, 'XScale', 'log');  set(gca, 'YScale', 'log');
+	drawnow
+
+	if plotSave
+	
+		figureString = strcat('convergence_', lower(odeString));
+		saveas(gcf, figureString, 'epsc')
+		close gcf
+	
+	end
+
+end
+
+%% Rate of Convergence Analysis
+
+logRelError = log10(relError);
+
+for kID = 1:6
+
+	for rocID = 1:length(logRelError) - 1
+		roc(kID, rocID) = (logRelError(kID, rocID+1) - logRelError(kID, rocID)) / -log10(2);
+	end
+
+end
+
+colLabels = {'$\Delta x$', '$\beta(c=1)$', '$\beta(c=2)$', '$\beta(c=5)$', ...
+'$\beta(c=10)$', '$\beta(c=20)$', '$\beta(c=50)$'};
+
+if tableSave
+
+	matrix2latex([mesh.dx(1:end-1)' roc'], strcat('roc_table_', lower(odeString), '.tex'), ...
+	'columnLabels', colLabels, 'alignment', 'c', 'format', '%5.4f')
+
+end
+
+colLabels1 = {'$\Delta x$', '$u''_{c=1}(1)$', '$u''_{c=2}(1)$', '$u''_{c=5}(1)$', ...
+'$\bar{u}''_{c=1}(1)$', '$\bar{u}''_{c=2}(1)$', '$\bar{u}''_{c=5}(1)$', ...
+'$\epsilon''_{rel,c=1}$', '$\epsilon''_{rel,c=2}$', '$\epsilon''_{rel,c=5}$'};
+colLabels2 = {'$\Delta x$', '$u''_{c=10}(1)$', '$u''_{c=20}(1)$', '$u''_{c=50}(1)$', ...
+'$\bar{u}''_{c=10}(1)$', '$\bar{u}''_{c=20}(1)$', '$\bar{u}''_{c=50}(1)$', ...
+'$\epsilon''_{rel,c=10}$', '$\epsilon''_{rel,c=20}$', '$\epsilon''_{rel,c=50}$'};
+
+if tableSave3
+
+	matrix2latex([mesh.dx(1:end)' dudx.fdm(1:3,:)', dudx.exact(1:3, :)', relError(1:3, :)'], ...
+	strcat('qoi_1_table_', lower(odeString), '.tex'), 'columnLabels', colLabels1, ...
+	'alignment', 'c', 'format', '%5.4f')
+	matrix2latex([mesh.dx(1:end)' dudx.fdm(4:6,:)', dudx.exact(4:6, :)', relError(4:6, :)'], ...
+	strcat('qoi_2_table_', lower(odeString), '.tex'), 'columnLabels', colLabels2, ...
+	'alignment', 'c', 'format', '%5.4f')
+
+end
+\end{lstlisting}
+
+\end{document}
